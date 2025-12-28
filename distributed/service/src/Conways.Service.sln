@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.Service.HttpApi", "Conways.Service.HttpApi\Conways.Service.HttpApi.csproj", "{54453E80-BEF3-480C-96C8-45956AA08F4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.Service.Application", "Conways.Service.Application\Conways.Service.Application.csproj", "{4BCF9A61-D6AF-42FE-9617-92D5F67EBE58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.Service.Domain", "Conways.Service.Domain\Conways.Service.Domain.csproj", "{E49E766C-6807-41AE-AA9D-B3759A65F5A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conways.Service.Infrastructure.MongoDb", "Conways.Service.Infrastructure.MongoDb\Conways.Service.Infrastructure.MongoDb.csproj", "{E3C02A76-FF04-46A5-BA12-022D7A4F1528}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54453E80-BEF3-480C-96C8-45956AA08F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54453E80-BEF3-480C-96C8-45956AA08F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54453E80-BEF3-480C-96C8-45956AA08F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54453E80-BEF3-480C-96C8-45956AA08F4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BCF9A61-D6AF-42FE-9617-92D5F67EBE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BCF9A61-D6AF-42FE-9617-92D5F67EBE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BCF9A61-D6AF-42FE-9617-92D5F67EBE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BCF9A61-D6AF-42FE-9617-92D5F67EBE58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E49E766C-6807-41AE-AA9D-B3759A65F5A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E49E766C-6807-41AE-AA9D-B3759A65F5A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E49E766C-6807-41AE-AA9D-B3759A65F5A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E49E766C-6807-41AE-AA9D-B3759A65F5A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3C02A76-FF04-46A5-BA12-022D7A4F1528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3C02A76-FF04-46A5-BA12-022D7A4F1528}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3C02A76-FF04-46A5-BA12-022D7A4F1528}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3C02A76-FF04-46A5-BA12-022D7A4F1528}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
