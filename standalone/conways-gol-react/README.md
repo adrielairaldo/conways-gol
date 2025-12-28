@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# Purpose of this project
+Deepen my understanding of Conway's Game of Life through a minimal implementation using only React.
+The business rules will be implemented based on the description provided in https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Get it started
+Only run in the root directory:
+    npm run dev
+The port is static at 3001, so it should be available at http://localhost:3001/
 
-Currently, two official plugins are available:
+# Core Principles
+ - Separation of concerns: Game rules ≠ rendering ≠ state orchestration. *I'm a BE eng., I'll try to bring some of my knowledge to FE.*
+ - Pure functions where possible; focus on deterministic evolution of the grid.
+ - Predictable state updates -> No hidden side effects.
+ - Performance-aware but pragmatic: Optimize only *when it matters*, not prematurely
+ - Scalable design. Easy to add new features (speed control, patterns, infinite grid)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# High-Level Architecture
+## Logical Layers
+Division of architecture into three layers (kind of mimicking typical BE architecture):
 
-## React Compiler
+    /domain        → Game rules & algorithms (pure, framework-agnostic)
+    /state         → Game lifecycle & orchestration
+    /ui            → React components (rendering only)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Domain Layer
+ - Pure Logic, no React.
+ - Immutable Data Model (*Cell*, *Grid*):  Easy to reason about, prevents errors, aligns with React's philosophy.
+ - Game Rules (*countAliveNeighbors*, *nextGeneration*): SRP (Single Responsibility Principle), pure functions, only Business Rules.
 
-## Expanding the ESLint configuration
+## State Management Layer
+ - My choice: only React and useReducer for state management.
+ - State Machine like: Explicit state transitions, easy to reason about.
+ - It allows me to do a little mirroring with the pattern commands and handlers I'm used to.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## React Layer (UI)
+ - **App:** owns state & lifecycle.
+ - **Grid:** layout only.
+ - **Cell:** render + click interaction
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Rendering Strategy
+ - Use *React.memo* on *Cell*; avoid re-rendering unchanged cells.
+ - Pass only minimal props.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+###  Timing & Game Loop
+ - *useEffect + setInterval* in *App* component (responsible for state & lifecycle).
+ - Why? Declarative lifecycle, no hidden mutable timers.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+###  Styling Philosophy
+ - I'm not great at that. I'm looking for something simple that will allow me to implement the idea.
+ - I use CSS grid with minimal colors, and no animation unless trivial.
+ - For components that merit it, I create a style sheet per component (it's not something I love doing, but in this case it isolates the logic from the rendering a little more).
+ - Maybe I could play around with a framework like Tailwind.
