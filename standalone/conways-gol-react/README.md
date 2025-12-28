@@ -4,7 +4,9 @@ The business rules will be implemented based on the description provided in http
 
 # Get it started
 Only run in the root directory:
+
     npm run dev
+
 The port is static at 3001, so it should be available at http://localhost:3001/
 
 # Core Principles
