@@ -14,7 +14,7 @@ public sealed class BoardTests
         var boardId = new BoardId(Guid.NewGuid());
         var initialState = new BoardState
         (
-            BasicGridGenerator.SimpleBlinker(),
+            BasicGridGenerator.SimpleVerticalBlinker(),
             generation: 0
         );
 
@@ -33,7 +33,7 @@ public sealed class BoardTests
         var board = new Board
         (
             new BoardId(Guid.NewGuid()),
-            new BoardState(BasicGridGenerator.SimpleBlinker(), generation: 0)
+            new BoardState(BasicGridGenerator.SimpleVerticalBlinker(), generation: 0)
         );
 
         var nextState = new BoardState
@@ -57,7 +57,7 @@ public sealed class BoardTests
         var board = new Board
         (
             boardId,
-            new BoardState(BasicGridGenerator.SimpleBlinker(), generation: 0)
+            new BoardState(BasicGridGenerator.SimpleVerticalBlinker(), generation: 0)
         );
 
         var nextState = new BoardState

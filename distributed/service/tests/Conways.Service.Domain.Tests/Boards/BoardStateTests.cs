@@ -11,7 +11,7 @@ public sealed class BoardStateTests
     public void Constructor_ShouldAssignGridAndGeneration()
     {
         // Arrange
-        var grid = BasicGridGenerator.SimpleBlinker();
+        var grid = BasicGridGenerator.SimpleVerticalBlinker();
         const int generation = 5;
 
         // Act
@@ -26,7 +26,7 @@ public sealed class BoardStateTests
     public void BoardState_ShouldBeImmutable()
     {
         // Arrange
-        var grid = BasicGridGenerator.SimpleBlinker();
+        var grid = BasicGridGenerator.SimpleVerticalBlinker();
         var boardState = new BoardState(grid, generation: 0);
 
         // Act
