@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Conways.Service.Domain\Conways.Service.Domain.csproj" />
     <ProjectReference Include="..\..\src\Conways.Service.Application\Conways.Service.Application.csproj" />
   </ItemGroup>
 

@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Conways.Service.Application.Boards.GetBoard;
-using Conways.Service.Application.Tests.TestData;
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Repositories;
+using Conways.Service.Domain.TestData;
+
 using FluentAssertions;
+
 using Moq;
 
 namespace Conways.Service.Application.Tests.Boards;

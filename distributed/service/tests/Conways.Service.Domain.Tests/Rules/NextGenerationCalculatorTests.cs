@@ -1,6 +1,7 @@
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Rules;
-using Conways.Service.Domain.Tests.TestData;
+using Conways.Service.Domain.TestData;
+
 using FluentAssertions;
 
 namespace Conways.Service.Domain.Tests.Rules;

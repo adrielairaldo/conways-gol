@@ -1,8 +1,8 @@
 using Conways.Service.Application.Boards.AdvanceBoard;
-using Conways.Service.Application.Tests.TestData;
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Repositories;
 using Conways.Service.Domain.Rules;
+using Conways.Service.Domain.TestData;
 
 using FluentAssertions;
 
