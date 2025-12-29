@@ -1,6 +1,6 @@
 using Conways.Service.Application.Abstractions;
 using Conways.Service.Application.Boards.CreateBoard;
-
+using Conways.Service.Application.Boards.GetBoard;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +12,7 @@ public static class ApplicationDependenciesContainer
     {
         // Boards
         services.AddTransient<ICommandHandler<CreateBoardCommand, CreateBoardResult>, CreateBoardHandler>();
+        services.AddTransient<IQueryHandler<GetBoardQuery, GetBoardResult>, GetBoardHandler>();
 
         return services;
     }
