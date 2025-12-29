@@ -29,4 +29,18 @@ internal static class BasicGridGenerator
             [CellState.Alive, CellState.Alive]
         ]
     );
+
+    public static Grid SingleAliveCellGrid() => new
+    (
+        [
+            [CellState.Alive]
+        ]
+    );
+
+    public static Grid SingleDeadCellGrid() => new
+    (
+        [
+            [CellState.Dead]
+        ]
+    );
 }
