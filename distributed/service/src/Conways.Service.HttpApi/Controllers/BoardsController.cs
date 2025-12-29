@@ -1,4 +1,5 @@
 using Conways.Service.Application.Abstractions;
+using Conways.Service.Application.Boards.AdvanceBoard;
 using Conways.Service.Application.Boards.CreateBoard;
 using Conways.Service.Application.Boards.GetBoard;
 using Conways.Service.Domain.Boards;
@@ -39,5 +40,25 @@ public class BoardsController : ControllerBase
         var result = await service.HandleAsync(query, CancellationToken.None);
 
         return Ok(GetBoardResponse.From(result.CurrentState));
+    }
+
+    [HttpPost("{boardId:guid}/advance")]
+    public async Task<ActionResult<AdvanceBoardResponse>> AdvanceBoardAsync
+    (
+        [FromRoute] Guid boardId,
+        [FromBody] AdvanceBoardRequest request,
+        [FromServices] ICommandHandler<AdvanceBoardCommand, AdvanceBoardResult> handler,
+        CancellationToken cancellationToken
+    )
+    {
+        var command = new AdvanceBoardCommand
+        (
+            BoardId: new BoardId(boardId),
+            Steps: request.Steps
+        );
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return Ok(AdvanceBoardResponse.From(result.CurrentState));
     }
 }
