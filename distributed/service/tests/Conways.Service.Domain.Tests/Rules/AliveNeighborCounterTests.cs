@@ -12,12 +12,14 @@ public sealed class AliveNeighborCounterTests
     public void Count_ShouldReturnZero_WhenCellHasNoAliveNeighbors()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Dead, CellState.Dead, CellState.Dead },
-            new List<CellState> { CellState.Dead, CellState.Dead, CellState.Dead },
-            new List<CellState> { CellState.Dead, CellState.Dead, CellState.Dead }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Dead, CellState.Dead, CellState.Dead],
+                [CellState.Dead, CellState.Dead, CellState.Dead],
+                [CellState.Dead, CellState.Dead, CellState.Dead]
+            ]
+        );
 
         const int targetRow = 1;
         const int targetColumn = 1;
@@ -33,12 +35,14 @@ public sealed class AliveNeighborCounterTests
     public void Count_ShouldReturnCorrectNumber_WhenSomeNeighborsAreAlive()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Alive, CellState.Dead,  CellState.Alive },
-            new List<CellState> { CellState.Dead,  CellState.Dead,  CellState.Dead  },
-            new List<CellState> { CellState.Alive, CellState.Dead,  CellState.Dead  }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Alive, CellState.Dead,  CellState.Alive],
+                [CellState.Dead,  CellState.Dead,  CellState.Dead ],
+                [CellState.Alive, CellState.Dead,  CellState.Dead ]
+            ]
+        );
 
         const int targetRow = 1;
         const int targetColumn = 1;
@@ -54,11 +58,13 @@ public sealed class AliveNeighborCounterTests
     public void Count_ShouldIgnoreCellsOutsideGridBounds()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Alive, CellState.Alive },
-            new List<CellState> { CellState.Alive, CellState.Dead  }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Alive, CellState.Alive],
+                [CellState.Alive, CellState.Dead ]
+            ]
+        );
 
         const int targetRow = 0;
         const int targetColumn = 0;
@@ -74,12 +80,14 @@ public sealed class AliveNeighborCounterTests
     public void Count_ShouldNotCountTargetCellItself()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Alive, CellState.Alive, CellState.Alive },
-            new List<CellState> { CellState.Alive, CellState.Alive, CellState.Alive },
-            new List<CellState> { CellState.Alive, CellState.Alive, CellState.Alive }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Alive, CellState.Alive, CellState.Alive],
+                [CellState.Alive, CellState.Alive, CellState.Alive],
+                [CellState.Alive, CellState.Alive, CellState.Alive]
+            ]
+        );
 
         const int targetRow = 1;
         const int targetColumn = 1;

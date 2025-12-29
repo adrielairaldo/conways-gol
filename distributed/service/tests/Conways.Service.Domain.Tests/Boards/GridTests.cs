@@ -38,10 +38,10 @@ public sealed class GridTests
     public void Constructor_ShouldThrow_WhenRowsHaveDifferentLengths()
     {
         // Arrange
-        var invalidGrid = new List<IReadOnlyList<CellState>>
+        var invalidGrid = new[]
         {
-            new List<CellState> { CellState.Dead, CellState.Alive },
-            new List<CellState> { CellState.Alive }
+            new[] { CellState.Dead, CellState.Alive },
+            new[] { CellState.Alive }
         };
 
         // Act
@@ -56,11 +56,12 @@ public sealed class GridTests
     public void Constructor_ShouldCreateGrid_WhenInputIsValid()
     {
         // Arrange
-        var cells = new List<List<CellState>>
+        var cells = new[]
         {
-            new() { CellState.Dead, CellState.Alive },
-            new() { CellState.Alive, CellState.Dead }
+            new[] { CellState.Dead, CellState.Alive },
+            new[] { CellState.Alive, CellState.Dead }
         };
+
 
         // Act
         var grid = new Grid(cells);
@@ -75,11 +76,13 @@ public sealed class GridTests
     public void GetCell_ShouldReturnCorrectCellState_ForGivenCoordinates()
     {
         // Arrange
-        var grid = new Grid(new List<List<CellState>>
-        {
-            new() { CellState.Dead,  CellState.Alive },
-            new() { CellState.Alive, CellState.Dead  }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Dead,  CellState.Alive],
+                [CellState.Alive, CellState.Dead ]
+            ]
+        );
 
         const int targetRow = 1;
         const int targetColumn = 0;

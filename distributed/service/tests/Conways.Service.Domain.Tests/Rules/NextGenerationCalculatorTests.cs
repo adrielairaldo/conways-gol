@@ -19,12 +19,14 @@ public sealed class NextGenerationCalculatorTests
     public void Calculate_ShouldKillAliveCell_WhenItHasFewerThanTwoAliveNeighbors()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Dead,  CellState.Dead,  CellState.Dead },
-            new List<CellState> { CellState.Dead,  CellState.Alive, CellState.Dead },
-            new List<CellState> { CellState.Dead,  CellState.Dead,  CellState.Dead }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Dead,  CellState.Dead,  CellState.Dead],
+                [CellState.Dead,  CellState.Alive, CellState.Dead],
+                [CellState.Dead,  CellState.Dead,  CellState.Dead]
+            ]
+        );
 
         // Act
         var nextGrid = _calculator.Calculate(grid);
@@ -37,12 +39,14 @@ public sealed class NextGenerationCalculatorTests
     public void Calculate_ShouldKeepAliveCellAlive_WhenItHasTwoAliveNeighbors()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Dead,  CellState.Alive, CellState.Dead },
-            new List<CellState> { CellState.Alive, CellState.Alive, CellState.Dead },
-            new List<CellState> { CellState.Dead,  CellState.Dead,  CellState.Dead }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Dead,  CellState.Alive, CellState.Dead],
+                [CellState.Alive, CellState.Alive, CellState.Dead],
+                [CellState.Dead,  CellState.Dead,  CellState.Dead]
+            ]
+        );
 
         // Act
         var nextGrid = _calculator.Calculate(grid);
@@ -55,12 +59,14 @@ public sealed class NextGenerationCalculatorTests
     public void Calculate_ShouldKillAliveCell_WhenItHasMoreThanThreeAliveNeighbors()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Alive, CellState.Alive, CellState.Alive },
-            new List<CellState> { CellState.Alive, CellState.Alive, CellState.Dead  },
-            new List<CellState> { CellState.Dead,  CellState.Dead,  CellState.Dead  }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Alive, CellState.Alive, CellState.Alive],
+                [CellState.Alive, CellState.Alive, CellState.Dead ],
+                [CellState.Dead,  CellState.Dead,  CellState.Dead ]
+            ]
+        );
 
         // Act
         var nextGrid = _calculator.Calculate(grid);
@@ -73,12 +79,14 @@ public sealed class NextGenerationCalculatorTests
     public void Calculate_ShouldReviveDeadCell_WhenItHasExactlyThreeAliveNeighbors()
     {
         // Arrange
-        var grid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Alive, CellState.Alive, CellState.Dead },
-            new List<CellState> { CellState.Alive, CellState.Dead,  CellState.Dead },
-            new List<CellState> { CellState.Dead,  CellState.Dead,  CellState.Dead }
-        });
+        var grid = new Grid
+        (
+            [
+                [CellState.Alive, CellState.Alive, CellState.Dead],
+                [CellState.Alive, CellState.Dead,  CellState.Dead],
+                [CellState.Dead,  CellState.Dead,  CellState.Dead]
+            ]
+        );
 
         // Act
         var nextGrid = _calculator.Calculate(grid);

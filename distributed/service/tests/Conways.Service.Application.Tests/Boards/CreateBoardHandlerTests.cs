@@ -25,11 +25,10 @@ public sealed class CreateBoardHandlerTests
         // Arrange
         var initialGrid = new Grid
         (
-            new[]
-            {
-                new[] { CellState.Dead, CellState.Alive },
-                new[] { CellState.Alive, CellState.Dead }
-            }
+            [
+                [CellState.Dead,  CellState.Alive],
+                [CellState.Alive, CellState.Dead ]
+            ]
         );
 
         var command = new CreateBoardCommand(initialGrid);
