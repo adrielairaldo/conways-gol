@@ -1,11 +1,14 @@
 using Conways.Service.Domain;
 using Conways.Service.Infrastructure.MongoDb;
+
 var builder = WebApplication.CreateBuilder(args);
 
 #region // Add services to the container
 
 builder.Services.AddDomainLayerServices();
 builder.Services.AddInfrastructureMongoDbServices(builder.Configuration);
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -22,6 +25,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapControllers();
 
 #endregion // Add middlewares to the pipeline
 
