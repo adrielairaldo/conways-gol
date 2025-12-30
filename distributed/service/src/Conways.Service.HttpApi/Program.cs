@@ -1,10 +1,13 @@
-using Conways.Service.Domain;
 using Conways.Service.Application;
+using Conways.Service.Domain;
+using Conways.Service.HttpApi.Extensions;
 using Conways.Service.Infrastructure.MongoDb;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region // Add services to the container
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddDomainLayerServices();
 builder.Services.AddApplicationLayerServices(builder.Configuration);
@@ -26,6 +29,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseReadynessHealthChecks();
+app.UseLivenessHealthCheck();
 
 app.MapControllers();
 
