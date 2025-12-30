@@ -30,6 +30,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(corsBuilder =>
+{
+    corsBuilder.WithOrigins("http://localhost:3000") // React client
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials(); // Just for SignalR
+});
+
 app.UseReadynessHealthChecks();
 app.UseLivenessHealthCheck();
 
