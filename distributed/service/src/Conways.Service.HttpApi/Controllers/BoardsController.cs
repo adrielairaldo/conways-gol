@@ -21,7 +21,7 @@ public class BoardsController : ControllerBase
         CancellationToken cancellationToken
     )
     {
-        var command = new CreateBoardCommand(request.InitialGrid);
+        var command = new CreateBoardCommand(new Grid(request.InitialGrid));
 
         var result = await handler.HandleAsync(command, cancellationToken);
 

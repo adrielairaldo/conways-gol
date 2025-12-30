@@ -2,4 +2,4 @@ using Conways.Service.Domain.Boards;
 
 namespace Conways.Service.HttpApi.Contracts;
 
-public sealed record CreateBoardRequest(Grid InitialGrid);
+public sealed record CreateBoardRequest(IReadOnlyList<IReadOnlyList<CellState>> InitialGrid);
