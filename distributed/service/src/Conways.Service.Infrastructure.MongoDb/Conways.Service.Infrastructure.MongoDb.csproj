@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- MongoDB: -->
-    <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.22.0" /> <!-- MongoDB: -->
+    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="8.0.0" /> <!-- MongoDB HealthChecks -->
   </ItemGroup>
 
 </Project>

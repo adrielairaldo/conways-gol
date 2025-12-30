@@ -22,6 +22,9 @@ public static class MongoDbDependenciesContainer
         // Get MongoDB options from configuration
         var options = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>()!;
 
+        // Add MongoDB health check
+        services.AddHealthChecks().AddMongoDb(options.ConnectionString);
+
         BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
         //BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
