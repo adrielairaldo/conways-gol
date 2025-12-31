@@ -35,6 +35,12 @@ export const App: React.FC = () => {
     );
   };
 
+  const handleReset = () => {
+    resetBoard(); // From useBoard hook
+    setDraftGrid(createEmptyGrid(rowCount, columnCount)); // Reset draft grid as well (this component state)
+  };
+
+
   const isGameStarted = boardState !== null;
 
   useEffect(() => {
@@ -79,11 +85,11 @@ export const App: React.FC = () => {
               isGameStarted={true}
               onAdvance={() => advance(1)}
               generation={boardState.generation}
-              onReset={resetBoard}
+              onReset={handleReset}
               disabled={isLoading}
             />
 
-            <Grid grid={boardState.grid} />
+            <Grid disabled={isLoading} grid={boardState.grid} />
           </>
         )}
       </div>
