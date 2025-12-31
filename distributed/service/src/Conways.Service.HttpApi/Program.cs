@@ -1,6 +1,7 @@
 using Conways.Service.Application;
 using Conways.Service.Domain;
 using Conways.Service.HttpApi.Extensions;
+using Conways.Service.HttpApi.Extensions.CorsSettings;
 using Conways.Service.Infrastructure.MongoDb;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,13 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(corsBuilder =>
-{
-    corsBuilder.WithOrigins("http://localhost:3000") // React client
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials(); // Just for SignalR
-});
+app.UseCustomCors(builder.Configuration);
 
 app.UseReadynessHealthChecks();
 app.UseLivenessHealthCheck();
