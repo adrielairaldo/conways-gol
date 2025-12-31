@@ -43,7 +43,7 @@ export const App: React.FC = () => {
         </>
       )}
 
-      {boardState && (
+      {isGameStarted && (
         <>
           <Grid grid={boardState.grid} />
 
