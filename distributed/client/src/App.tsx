@@ -9,7 +9,7 @@ const ROW_COUNT = 25;
 const COLUMN_COUNT = 25;
 
 export const App: React.FC = () => {
-  const { boardState, isLoading, recoverPreviousSessionIfAny, createNewBoard, advance } = useBoard();
+  const { boardState, isLoading, recoverPreviousSessionIfAny, createNewBoard, advance, resetBoard } = useBoard();
 
   const [draftGrid, setDraftGrid] = useState<CellState[][]>(() => createEmptyGrid(ROW_COUNT, COLUMN_COUNT));
 
@@ -28,7 +28,6 @@ export const App: React.FC = () => {
   const isGameStarted = boardState !== null;
 
   useEffect(() => {
-    console.log('Entered useEffect');
     recoverPreviousSessionIfAny();
   }, [recoverPreviousSessionIfAny]);
 
@@ -56,6 +55,7 @@ export const App: React.FC = () => {
             isGameStarted={true}
             onAdvance={() => advance(1)}
             generation={boardState.generation}
+            onReset={resetBoard}
             disabled={isLoading}
           />
         </>

@@ -68,12 +68,20 @@ export function useBoard() {
         [boardId]
     );
 
+    const resetBoard = useCallback(() => {
+        localStorage.removeItem(STORED_BOARD_ID_KEY);
+
+        setBoardId(null);
+        setBoardState(null);
+    }, []);
+
     return {
         boardId,
         boardState,
         isLoading,
         recoverPreviousSessionIfAny,
         createNewBoard,
-        advance
+        advance,
+        resetBoard
     };
 }

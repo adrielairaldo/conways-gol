@@ -5,10 +5,11 @@ interface Props {
     onCreateBoard?: () => void;
     onAdvance?: () => void;
     generation?: number;
+    onReset?: () => void;
     disabled: boolean;
 }
 
-export const Controls: React.FC<Props> = ({ isGameStarted, onCreateBoard, onAdvance, generation,disabled }) => (
+export const Controls: React.FC<Props> = ({ isGameStarted, onCreateBoard, onAdvance, generation, onReset, disabled }) => (
     <div className="controls">
         {!isGameStarted && (
             <button onClick={onCreateBoard} disabled={disabled}>
@@ -25,6 +26,10 @@ export const Controls: React.FC<Props> = ({ isGameStarted, onCreateBoard, onAdva
                 <span>
                     Generation: {generation}
                 </span>
+
+                <button onClick={onReset} disabled={disabled}>
+                    Reset
+                </button>
             </>
         )}
     </div>
