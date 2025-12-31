@@ -2,7 +2,7 @@ using Conways.Service.Application.Abstractions;
 using Conways.Service.Application.Boards.AdvanceBoard;
 using Conways.Service.Application.Boards.CreateBoard;
 using Conways.Service.Application.Boards.GetBoard;
-
+using Conways.Service.Application.Boards.SimulateUntilConclusion;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +16,7 @@ public static class ApplicationDependenciesContainer
         services.AddTransient<ICommandHandler<AdvanceBoardCommand, AdvanceBoardResult>, AdvanceBoardHandler>();
         services.AddTransient<ICommandHandler<CreateBoardCommand, CreateBoardResult>, CreateBoardHandler>();
         services.AddTransient<IQueryHandler<GetBoardQuery, GetBoardResult>, GetBoardHandler>();
+        services.AddTransient<ICommandHandler<SimulateUntilConclusionCommand, SimulateUntilConclusionResult>, SimulateUntilConclusionHandler>();
 
         return services;
     }

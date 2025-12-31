@@ -2,6 +2,7 @@ using Conways.Service.Application.Abstractions;
 using Conways.Service.Application.Boards.AdvanceBoard;
 using Conways.Service.Application.Boards.CreateBoard;
 using Conways.Service.Application.Boards.GetBoard;
+using Conways.Service.Application.Boards.SimulateUntilConclusion;
 using Conways.Service.Domain.Boards;
 using Conways.Service.HttpApi.Contracts;
 
@@ -60,5 +61,25 @@ public class BoardsController : ControllerBase
         var result = await handler.HandleAsync(command, cancellationToken);
 
         return Ok(AdvanceBoardResponse.From(result.CurrentState));
+    }
+
+    [HttpPost("{boardId:guid}/simulate-to-end")]
+    public async Task<ActionResult<SimulateUntilConclusionResponse>> SimulateUntilConclusionAsync
+    (
+        [FromRoute] Guid boardId,
+        [FromBody] SimulateUntilConclusionRequest request,
+        [FromServices] ICommandHandler<SimulateUntilConclusionCommand, SimulateUntilConclusionResult> handler,
+        CancellationToken cancellationToken
+    )
+    {
+        var command = new SimulateUntilConclusionCommand
+        (
+            BoardId: new BoardId(boardId),
+            MaxIterations: request.MaxIterations
+        );
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return Ok(SimulateUntilConclusionResponse.From(result.SimulationResult));
     }
 }
