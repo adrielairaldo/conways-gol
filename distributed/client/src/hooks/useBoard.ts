@@ -11,6 +11,31 @@ export function useBoard() {
 
     const STORED_BOARD_ID_KEY = "conways-game-of-life.board-id";
 
+    const recoverPreviousSessionIfAny = useCallback(async () => {
+        const storedBoardId = localStorage.getItem(STORED_BOARD_ID_KEY);
+
+        if (!storedBoardId) {
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const board = await BoardsApi.getBoard(storedBoardId);
+
+            setBoardId(storedBoardId);
+            setBoardState(board);
+        } catch {
+            // If recovery fails (e.g. board deleted or backend reset),
+            // we clean up the invalid stored session.
+            localStorage.removeItem("boardId");
+            setBoardId(null);
+            setBoardState(null);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     const createNewBoard = useCallback(async (initialGrid: number[][]) => {
         setIsLoading(true);
         try {
@@ -29,17 +54,17 @@ export function useBoard() {
     }, []);
 
     const advance = useCallback(async (steps: number) => {
-            if (!boardId) return;
+        if (!boardId) return;
 
-            setIsLoading(true);
-            try {
-                const advanceBoardRequest: AdvanceBoardRequest = { steps: steps };
-                const nextState = await BoardsApi.advanceBoard(boardId, advanceBoardRequest);
-                setBoardState(nextState);
-            } finally {
-                setIsLoading(false);
-            }
-        },
+        setIsLoading(true);
+        try {
+            const advanceBoardRequest: AdvanceBoardRequest = { steps: steps };
+            const nextState = await BoardsApi.advanceBoard(boardId, advanceBoardRequest);
+            setBoardState(nextState);
+        } finally {
+            setIsLoading(false);
+        }
+    },
         [boardId]
     );
 
@@ -47,6 +72,7 @@ export function useBoard() {
         boardId,
         boardState,
         isLoading,
+        recoverPreviousSessionIfAny,
         createNewBoard,
         advance
     };

@@ -3,13 +3,13 @@ import { Controls } from './ui/component/Controls';
 import { createEmptyGrid } from './utils/gridFactory';
 import { Grid } from './ui/component/Grid';
 import { useBoard } from './hooks/useBoard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ROW_COUNT = 25;
 const COLUMN_COUNT = 25;
 
 export const App: React.FC = () => {
-  const { boardState, isLoading, createNewBoard, advance } = useBoard();
+  const { boardState, isLoading, recoverPreviousSessionIfAny, createNewBoard, advance } = useBoard();
 
   const [draftGrid, setDraftGrid] = useState<CellState[][]>(() => createEmptyGrid(ROW_COUNT, COLUMN_COUNT));
 
@@ -26,6 +26,11 @@ export const App: React.FC = () => {
   };
 
   const isGameStarted = boardState !== null;
+
+  useEffect(() => {
+    console.log('Entered useEffect');
+    recoverPreviousSessionIfAny();
+  }, [recoverPreviousSessionIfAny]);
 
   return (
     <div style={{ textAlign: "center", padding: '1rem' }}>
