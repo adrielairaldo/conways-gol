@@ -46,8 +46,6 @@ export const App: React.FC = () => {
 
       {!isGameStarted && (
         <>
-          <Grid grid={draftGrid} onCellToggle={toggleDraftCell} />
-
           <Controls
             isGameStarted={false}
             rowCount={rowCount}
@@ -56,13 +54,13 @@ export const App: React.FC = () => {
             onCreateBoard={() => createNewBoard(draftGrid)}
             disabled={isLoading}
           />
+
+          <Grid grid={draftGrid} onCellToggle={toggleDraftCell} />
         </>
       )}
 
       {isGameStarted && (
         <>
-          <Grid grid={boardState.grid} />
-
           <Controls
             isGameStarted={true}
             onAdvance={() => advance(1)}
@@ -70,6 +68,8 @@ export const App: React.FC = () => {
             onReset={resetBoard}
             disabled={isLoading}
           />
+
+          <Grid grid={boardState.grid} />
         </>
       )}
     </div>
