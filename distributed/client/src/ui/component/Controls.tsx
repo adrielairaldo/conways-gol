@@ -2,19 +2,42 @@ import '../styles/controls.css';
 
 interface Props {
     isGameStarted: boolean;
+    disabled: boolean;
+
+    rowCount?: number;
+    columnCount?: number;
+    onGridSizeChange?: (rows: number, columns: number) => void;
+
     onCreateBoard?: () => void;
     onAdvance?: () => void;
     generation?: number;
     onReset?: () => void;
-    disabled: boolean;
 }
 
-export const Controls: React.FC<Props> = ({ isGameStarted, onCreateBoard, onAdvance, generation, onReset, disabled }) => (
+export const Controls: React.FC<Props> = ({ 
+    isGameStarted, disabled, rowCount, columnCount, onGridSizeChange, onCreateBoard, onAdvance, generation, onReset 
+}) => (
     <div className="controls">
         {!isGameStarted && (
-            <button onClick={onCreateBoard} disabled={disabled}>
-                Create board
-            </button>
+            <>
+                <label>
+                    Rows:
+                    <input type="number" min={1} value={rowCount} disabled={disabled}
+                        onChange={(e) => onGridSizeChange?.(Number(e.target.value), columnCount!)}
+                    />
+                </label>
+
+                <label>
+                    Columns:
+                    <input type="number" min={1} value={columnCount} disabled={disabled} 
+                        onChange={(e) => onGridSizeChange?.(rowCount!, Number(e.target.value))}
+                    />
+                </label>
+
+                <button onClick={onCreateBoard} disabled={disabled}>
+                    Create board
+                </button>
+            </>
         )}
 
         {isGameStarted && (

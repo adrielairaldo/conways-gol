@@ -5,13 +5,22 @@ import { Grid } from './ui/component/Grid';
 import { useBoard } from './hooks/useBoard';
 import { useEffect, useState } from 'react';
 
-const ROW_COUNT = 25;
-const COLUMN_COUNT = 25;
+const DEFAULT_ROW_COUNT = 25;
+const DEFAULT_COLUMN_COUNT = 25;
 
 export const App: React.FC = () => {
   const { boardState, isLoading, recoverPreviousSessionIfAny, createNewBoard, advance, resetBoard } = useBoard();
 
-  const [draftGrid, setDraftGrid] = useState<CellState[][]>(() => createEmptyGrid(ROW_COUNT, COLUMN_COUNT));
+  const [rowCount, setRowCount] = useState(DEFAULT_ROW_COUNT);
+  const [columnCount, setColumnCount] = useState(DEFAULT_COLUMN_COUNT);
+
+  const [draftGrid, setDraftGrid] = useState<CellState[][]>(() => createEmptyGrid(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT));
+
+  const handleGridSizeChange = (rows: number, columns: number) => {
+    setRowCount(rows);
+    setColumnCount(columns);
+    setDraftGrid(createEmptyGrid(rows, columns));
+  };
 
   const toggleDraftCell = (targetRow: number, targetColumn: number) => {
     setDraftGrid(currentGrid =>
@@ -41,6 +50,9 @@ export const App: React.FC = () => {
 
           <Controls
             isGameStarted={false}
+            rowCount={rowCount}
+            columnCount={columnCount}
+            onGridSizeChange={handleGridSizeChange}
             onCreateBoard={() => createNewBoard(draftGrid)}
             disabled={isLoading}
           />
