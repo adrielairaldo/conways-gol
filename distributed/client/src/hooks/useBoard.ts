@@ -9,15 +9,19 @@ export function useBoard() {
     const [boardState, setBoardState] = useState<BoardState | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const STORED_BOARD_ID_KEY = "conways-game-of-life.board-id";
+
     const createNewBoard = useCallback(async (initialGrid: number[][]) => {
         setIsLoading(true);
         try {
 
             const createBoardRequest: CreateBoardRequest = { initialGrid: initialGrid };
-            const result = await BoardsApi.createBoard(createBoardRequest);
-            setBoardId(result.boardId);
+            const createBoardResult = await BoardsApi.createBoard(createBoardRequest);
+            setBoardId(createBoardResult.boardId);
 
-            const board = await BoardsApi.getBoard(result.boardId);
+            localStorage.setItem(STORED_BOARD_ID_KEY, createBoardResult.boardId);
+
+            const board = await BoardsApi.getBoard(createBoardResult.boardId);
             setBoardState(board);
         } finally {
             setIsLoading(false);
