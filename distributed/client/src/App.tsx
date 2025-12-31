@@ -69,7 +69,7 @@ export const App: React.FC = () => {
               disabled={isLoading}
             />
 
-            <Grid grid={draftGrid} onCellToggle={toggleDraftCell} />
+            <Grid disabled={isLoading} grid={draftGrid} onCellToggle={toggleDraftCell} />
           </>
         )}
 
