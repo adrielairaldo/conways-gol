@@ -5,8 +5,8 @@ import { Grid } from './ui/component/Grid';
 import { useBoard } from './hooks/useBoard';
 import { useEffect, useState } from 'react';
 
-const DEFAULT_ROW_COUNT = 25;
-const DEFAULT_COLUMN_COUNT = 25;
+const DEFAULT_ROW_COUNT = import.meta.env.VITE_DEFAULT_ROW_COUNT;
+const DEFAULT_COLUMN_COUNT = import.meta.env.VITE_DEFAULT_COLUMN_COUNT;
 
 export const App: React.FC = () => {
   const { boardState, isLoading, recoverPreviousSessionIfAny, createNewBoard, advance, resetBoard } = useBoard();
