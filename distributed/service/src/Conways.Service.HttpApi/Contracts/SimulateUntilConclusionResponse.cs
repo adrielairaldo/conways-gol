@@ -7,13 +7,15 @@ public sealed record SimulateUntilConclusionResponse
 (
     IReadOnlyList<IReadOnlyList<CellState>> Grid,
     int Generation,
-    SimulationTerminationReason TerminationReason
+    int TerminationReasonCode,
+    string TerminationReasonDescription
 )
 {
     public static SimulateUntilConclusionResponse From(SimulationResult simulationResult) => new
     (
         simulationResult.FinalState.Grid.Cells,
         simulationResult.FinalState.Generation,
-        simulationResult.TerminationReason
+        (int)simulationResult.TerminationReason,
+        simulationResult.TerminationReason.ToString()
     );
 }
