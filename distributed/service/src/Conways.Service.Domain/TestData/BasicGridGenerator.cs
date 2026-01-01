@@ -26,6 +26,15 @@ public static class BasicGridGenerator
         ]
     );
 
+    public static Grid Glider() => new
+    (
+        [
+            [CellState.Dead,  CellState.Alive, CellState.Dead ],
+            [CellState.Dead,  CellState.Dead,  CellState.Alive],
+            [CellState.Alive, CellState.Alive, CellState.Alive]
+        ]
+    );
+
     public static Grid StillLifeBlock() => new
     (
         [

@@ -1,4 +1,5 @@
 using Conways.Service.Domain.Rules;
+using Conways.Service.Domain.Simulation;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,9 @@ public static class DomainDependenciesContainer
         // Rules:
         services.AddSingleton<AliveNeighborCounter>();
         services.AddSingleton<NextGenerationCalculator>();
+
+        // Simulation:
+        services.AddSingleton<BoardSimulationService>();
 
         return services;
     }

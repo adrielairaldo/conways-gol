@@ -15,17 +15,17 @@ public sealed class SimulateUntilConclusionHandlerTests
 {
     private readonly Mock<IBoardRepository> _boardRepositoryMock;
     private readonly NextGenerationCalculator _nextGenerationCalculator;
+    private readonly BoardSimulationService _boardSimulationService;
+
     private readonly SimulateUntilConclusionHandler _handler;
 
     public SimulateUntilConclusionHandlerTests()
     {
         _boardRepositoryMock = new Mock<IBoardRepository>();
-        _nextGenerationCalculator =
-            new NextGenerationCalculator(new AliveNeighborCounter());
+        _nextGenerationCalculator = new NextGenerationCalculator(new AliveNeighborCounter());
+        _boardSimulationService = new BoardSimulationService(_nextGenerationCalculator);
 
-        _handler = new SimulateUntilConclusionHandler(
-            _boardRepositoryMock.Object,
-            _nextGenerationCalculator);
+        _handler = new SimulateUntilConclusionHandler(_boardRepositoryMock.Object, _boardSimulationService);
     }
 
     [Fact]
@@ -38,9 +38,11 @@ public sealed class SimulateUntilConclusionHandlerTests
             .Setup(repository => repository.GetByIdAsync(boardId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((Board?)null);
 
-        var command = new SimulateUntilConclusionCommand(
+        var command = new SimulateUntilConclusionCommand
+        (
             boardId,
-            MaxIterations: 10);
+            MaxIterations: 10
+        );
 
         // Act
         var act = () => _handler.HandleAsync(command, CancellationToken.None);
@@ -54,33 +56,30 @@ public sealed class SimulateUntilConclusionHandlerTests
     public async Task HandleAsync_ShouldDetectStableState()
     {
         // Arrange
-        var stableGrid = new Grid(new List<IReadOnlyList<CellState>>
-        {
-            new List<CellState> { CellState.Alive, CellState.Alive },
-            new List<CellState> { CellState.Alive, CellState.Alive }
-        });
+        var stableGrid = BasicGridGenerator.StillLifeBlock();
 
-        var board = new Board(
+        var board = new Board
+        (
             BoardId.New(),
-            new BoardState(stableGrid, generation: 0));
+            new BoardState(stableGrid, generation: 0)
+        );
 
         _boardRepositoryMock
             .Setup(repository => repository.GetByIdAsync(board.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(board);
 
-        var command = new SimulateUntilConclusionCommand(
+        var command = new SimulateUntilConclusionCommand
+        (
             board.Id,
-            MaxIterations: 10);
+            MaxIterations: 10
+        );
 
         // Act
         var result = await _handler.HandleAsync(command, CancellationToken.None);
 
         // Assert
-        result.SimulationResult.TerminationReason
-            .Should().Be(SimulationTerminationReason.StableStateReached);
-
-        result.SimulationResult.FinalState.Generation
-            .Should().Be(0);
+        result.SimulationResult.TerminationReason.Should().Be(SimulationTerminationReason.StableStateReached);
+        result.SimulationResult.FinalState.Generation.Should().Be(0);
     }
 
     [Fact]
@@ -117,12 +116,7 @@ public sealed class SimulateUntilConclusionHandlerTests
     public async Task HandleAsync_ShouldThrow_WhenMaxIterationsReachedWithoutConclusion()
     {
         // Arrange
-        var gliderGrid = new Grid(new List<IReadOnlyList<CellState>>
-    {
-        new List<CellState> { CellState.Dead,  CellState.Alive, CellState.Dead },
-        new List<CellState> { CellState.Dead,  CellState.Dead,  CellState.Alive },
-        new List<CellState> { CellState.Alive, CellState.Alive, CellState.Alive }
-    });
+        var gliderGrid = BasicGridGenerator.Glider();
 
         var board = new Board
         (
