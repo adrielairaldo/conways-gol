@@ -4,16 +4,27 @@ interface Props {
     isGameStarted: boolean;
     disabled: boolean;
 
+    // Props used when game is NOT started:
     rowCount?: number;
     columnCount?: number;
     onGridSizeChange?: (rows: number, columns: number) => void;
 
+    // Props used when game IS started:
     onCreateBoard?: () => void;
     onAdvance?: () => void;
     generation?: number;
     onReset?: () => void;
 }
 
+/**
+ * Controls component for Conway's Game of Life.
+ * 
+ * This component displays different controls based on whether the game has started:
+ * - Before game starts: Shows row/column inputs and a "Create Board" button
+ * - After game starts: Shows "Next Generation" button, generation counter, and "Reset" button
+ * 
+ * All controls can be disabled simultaneously (e.g., during API calls) using the disabled prop.
+ */
 export const Controls: React.FC<Props> = ({
     isGameStarted, disabled, rowCount, columnCount, onGridSizeChange, onCreateBoard, onAdvance, generation, onReset
 }) => (

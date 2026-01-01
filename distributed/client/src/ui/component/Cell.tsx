@@ -6,6 +6,16 @@ interface Props {
     onClick?: () => void;
 }
 
+/**
+ * Represents a single cell in Conway's Game of Life grid.
+ * 
+ * This component displays a cell that can be either alive (cyan with glow effect)
+ * or dead (dark gray). If an onClick handler is provided, the cell becomes
+ * clickable and shows hover effects.
+ * 
+ * The component is memoized to prevent unnecessary re-renders and improve
+ * performance when dealing with large grids.
+ */
 export const Cell: React.FC<Props> = React.memo(({ isAlive, onClick }) => {
     return (
         <div

@@ -8,6 +8,16 @@ interface GridProps {
     onCellToggle?: (targetRow: number, targetColumn: number) => void;
 }
 
+/**
+ * Grid component that displays the Conway's Game of Life board.
+ * 
+ * This component renders a 2D grid of Cell components. When disabled (e.g., during
+ * API calls), it displays a loading overlay with a spinner and prevents all user
+ * interaction with the cells.
+ * 
+ * The grid size is dynamic and automatically adjusts based on the number of
+ * columns in the provided grid data.
+ */
 export const Grid: React.FC<GridProps> = ({ disabled, grid, onCellToggle }) => {
     return (
         <div className="flex justify-center items-start">

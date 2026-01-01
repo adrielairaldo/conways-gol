@@ -9,6 +9,13 @@ import './ui/styles/tailwind.css';
 const DEFAULT_ROW_COUNT = import.meta.env.VITE_DEFAULT_ROW_COUNT;
 const DEFAULT_COLUMN_COUNT = import.meta.env.VITE_DEFAULT_COLUMN_COUNT;
 
+/**
+ * Main application component for Conway's Game of Life.
+ * 
+ * This component manages the overall application state and coordinates between
+ * the draft grid (where users design their initial pattern) and the active game
+ * board (where the simulation runs).
+ */
 export const App: React.FC = () => {
   const { boardState, isLoading, recoverPreviousSessionIfAny, createNewBoard, advance, resetBoard } = useBoard();
 
@@ -17,12 +24,30 @@ export const App: React.FC = () => {
 
   const [draftGrid, setDraftGrid] = useState<CellState[][]>(() => createEmptyGrid(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT));
 
+  /**
+   * Updates the grid dimensions and creates a new empty draft grid.
+   * 
+   * This function is called when users change the row or column count
+   * in the input fields before creating a board.
+   * 
+   * @param rows - The new number of rows for the grid
+   * @param columns - The new number of columns for the grid
+   */
   const handleGridSizeChange = (rows: number, columns: number) => {
     setRowCount(rows);
     setColumnCount(columns);
     setDraftGrid(createEmptyGrid(rows, columns));
   };
 
+  /**
+   * Toggles a cell between alive and dead states in the draft grid.
+   * 
+   * This function is called when users click on cells before the game starts,
+   * allowing them to design their initial pattern.
+   * 
+   * @param targetRow - The row index of the cell to toggle
+   * @param targetColumn - The column index of the cell to toggle
+   */
   const toggleDraftCell = (targetRow: number, targetColumn: number) => {
     setDraftGrid(currentGrid =>
       currentGrid.map((row, rowIndex) =>
@@ -35,14 +60,24 @@ export const App: React.FC = () => {
     );
   };
 
+  /**
+   * Resets the board and clears the draft grid.
+   * 
+   * This function is called when users click the Reset button. It clears
+   * the active board and creates a fresh empty draft grid for designing
+   * a new pattern.
+   */
   const handleReset = () => {
     resetBoard(); // From useBoard hook
     setDraftGrid(createEmptyGrid(rowCount, columnCount)); // Reset draft grid as well (this component state)
   };
 
-
   const isGameStarted = boardState !== null;
 
+  /**
+   * Attempts to recover a previous session when the app loads.
+   * This runs once when the component mounts.
+   */
   useEffect(() => {
     recoverPreviousSessionIfAny();
   }, [recoverPreviousSessionIfAny]);
