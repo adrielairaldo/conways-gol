@@ -8,6 +8,22 @@ const axiosInstance: AxiosInstance = axios.create({
   },
 });
 
+// const sleep = (delay: number) => {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, delay);
+//   })
+// }
+
+// axiosInstance.interceptors.response.use(async response => {
+//   try {
+//     await sleep(2000);
+//     return response;
+//   } catch (error) {
+//     console.log(error);
+//     return await Promise.reject(error)
+//   }
+// })
+
 // Extract only the data
 const getResponseBody = <T>(response: AxiosResponse<T>) => response.data;
 
