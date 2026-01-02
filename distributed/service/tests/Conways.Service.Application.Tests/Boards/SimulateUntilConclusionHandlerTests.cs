@@ -113,32 +113,34 @@ public sealed class SimulateUntilConclusionHandlerTests
     }
 
     [Fact]
-    public async Task HandleAsync_ShouldThrow_WhenMaxIterationsReachedWithoutConclusion()
+    public async Task HandleAsync_ShouldReturnMaxIterationsExceeded_WhenSimulationDoesNotConclude()
     {
         // Arrange
-        var gliderGrid = BasicGridGenerator.Glider();
+        var boardId = BoardId.New();
+        var glider = BasicGridGenerator.Glider3x3();
 
         var board = new Board
         (
-            BoardId.New(),
-            new BoardState(gliderGrid, generation: 0)
+            boardId,
+            new BoardState(glider, generation: 0)
         );
 
         _boardRepositoryMock
-            .Setup(repository => repository.GetByIdAsync(board.Id, It.IsAny<CancellationToken>()))
+            .Setup(r => r.GetByIdAsync(boardId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(board);
 
         var command = new SimulateUntilConclusionCommand
         (
-            board.Id,
-            MaxIterations: 1 // We know a glider won't stabilize or oscillate in just one iteration
+            boardId,
+            /* A 3x3 glider stabilizes in a 2x2 square starting at iteration 4. At iteration 3,
+             * there are still no conclusive results. */
+            MaxIterations: 3
         );
 
         // Act
-        var act = () => _handler.HandleAsync(command, CancellationToken.None);
+        var result = await _handler.HandleAsync(command, CancellationToken.None);
 
         // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("*did not reach a conclusion*");
+        result.SimulationResult.TerminationReason.Should().Be(SimulationTerminationReason.MaxIterationsExceeded);
     }
 }

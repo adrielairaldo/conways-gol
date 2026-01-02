@@ -50,7 +50,11 @@ public sealed class BoardSimulationService
             );
         }
 
-        throw new InvalidOperationException($"Simulation did not reach a conclusion after {maxIterations} iterations.");
+        return new SimulationResult
+        (
+            currentState,
+            SimulationTerminationReason.MaxIterationsExceeded
+        );
     }
 
     private static bool AreGridsEqual(Grid first, Grid second)

@@ -54,23 +54,20 @@ public sealed class BoardSimulationServiceTests
     [Fact]
     public void SimulateUntilConclusion_ShouldThrow_WhenMaxIterationsReached()
     {
-        // Arrange (glider keeps evolving)
-        var grid = new Grid
-        (
-            [
-                [CellState.Dead,  CellState.Alive, CellState.Dead ],
-                [CellState.Dead,  CellState.Dead,  CellState.Alive],
-                [CellState.Alive, CellState.Alive, CellState.Alive]
-            ]
-        );
+        // Arrange
+        var glider = BasicGridGenerator.Glider3x3();
 
-        var initialState = new BoardState(grid, generation: 0);
+        var initialState = new BoardState(glider, generation: 0);
 
         // Act
-        var act = () => _simulationService.SimulateUntilConclusion(initialState, maxIterations: 2);
+        var result = _simulationService.SimulateUntilConclusion
+        (
+            initialState,
+            /* A 3x3 glider stabilizes in a 2x2 square starting at iteration 4. At iteration 3,
+             * there are still no conclusive results. */
+            maxIterations: 3);
 
         // Assert
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("*did not reach a conclusion*");
+        result.TerminationReason.Should().Be(SimulationTerminationReason.MaxIterationsExceeded);
     }
 }
