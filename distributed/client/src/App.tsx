@@ -5,6 +5,7 @@ import { Grid } from './ui/component/Grid';
 import { useBoard } from './hooks/useBoard';
 import { useEffect, useState } from 'react';
 import './ui/styles/tailwind.css';
+import { Toast } from './ui/component/Toast';
 
 const DEFAULT_ROW_COUNT = import.meta.env.VITE_DEFAULT_ROW_COUNT;
 const DEFAULT_COLUMN_COUNT = import.meta.env.VITE_DEFAULT_COLUMN_COUNT;
@@ -23,6 +24,8 @@ export const App: React.FC = () => {
   const [columnCount, setColumnCount] = useState(DEFAULT_COLUMN_COUNT);
 
   const [draftGrid, setDraftGrid] = useState<CellState[][]>(() => createEmptyGrid(DEFAULT_ROW_COUNT, DEFAULT_COLUMN_COUNT));
+
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   /**
    * Updates the grid dimensions and creates a new empty draft grid.
@@ -72,6 +75,22 @@ export const App: React.FC = () => {
     setDraftGrid(createEmptyGrid(rowCount, columnCount)); // Reset draft grid as well (this component state)
   };
 
+  /**
+   * Displays an error message to the user via a toast notification.
+   * 
+   * @param message - The error message to display
+   */
+  const showError = (message: string) => {
+    setErrorMessage(message);
+  };
+
+  /**
+   * Closes the error toast notification.
+   */
+  const closeError = () => {
+    setErrorMessage(null);
+  };
+
   const isGameStarted = boardState !== null;
 
   /**
@@ -79,7 +98,7 @@ export const App: React.FC = () => {
    * This runs once when the component mounts.
    */
   useEffect(() => {
-    recoverPreviousSessionIfAny();
+    recoverPreviousSessionIfAny(showError);
   }, [recoverPreviousSessionIfAny]);
 
   return (
@@ -87,6 +106,11 @@ export const App: React.FC = () => {
       className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-white py-8 px-4"
       //style={{ textAlign: "center", padding: '1rem' }}
     >
+      {/* Toast Notification */}
+      {errorMessage && (
+        <Toast message={errorMessage} onClose={closeError} />
+      )}
+
       <div className="max-w-7xl mx-auto">
         <header className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-3 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
@@ -106,7 +130,7 @@ export const App: React.FC = () => {
               rowCount={rowCount}
               columnCount={columnCount}
               onGridSizeChange={handleGridSizeChange}
-              onCreateBoard={() => createNewBoard(draftGrid)}
+              onCreateBoard={() => createNewBoard(draftGrid, showError)}
               disabled={isLoading}
             />
 
@@ -118,7 +142,7 @@ export const App: React.FC = () => {
           <>
             <Controls
               isGameStarted={true}
-              onAdvance={() => advance(1)}
+              onAdvance={() => advance(1, showError)}
               generation={boardState.generation}
               onReset={handleReset}
               disabled={isLoading}

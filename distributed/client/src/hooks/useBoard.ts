@@ -34,8 +34,10 @@ export function useBoard() {
      * or backend was reset), it cleans up the invalid stored data.
      * 
      * This function should be called once when the app initializes.
+     * 
+     * @param onError - Callback function to display error messages to the user
      */
-    const recoverPreviousSessionIfAny = useCallback(async () => {
+    const recoverPreviousSessionIfAny = useCallback(async (onError: (message: string) => void) => {
         const storedBoardId = localStorage.getItem(STORED_BOARD_ID_KEY);
 
         if (!storedBoardId) {
@@ -57,12 +59,16 @@ export function useBoard() {
             // Update state:
             setBoardId(storedBoardId);
             setBoardState(boardState);
-        } catch {
-            // If recovery fails (e.g. board deleted or backend reset),
-            // we clean up the invalid stored session.
-            localStorage.removeItem("boardId");
+        } catch (error: any) {
+            // Clean up invalid stored session
+            localStorage.removeItem(STORED_BOARD_ID_KEY);
             setBoardId(null);
             setBoardState(null);
+
+            // Show error to user if it's not just a missing board
+            if (error.userMessage) {
+                onError(error.userMessage);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -76,9 +82,9 @@ export function useBoard() {
      * initial board state.
      * 
      * @param initialGrid - A 2D array representing the initial state of cells
-     *                      (1 for alive, 0 for dead)
+     * @param onError - Callback function to display error messages to the user
      */
-    const createNewBoard = useCallback(async (initialGrid: number[][]) => {
+    const createNewBoard = useCallback(async (initialGrid: number[][], onError: (message: string) => void) => {
         setIsLoading(true);
         try {
             // Create the Board:
@@ -100,6 +106,11 @@ export function useBoard() {
 
             // Update state:
             setBoardState(boardState);
+        } catch (error: any) {
+            // Show error to user
+            if (error.userMessage) {
+                onError(error.userMessage);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -113,8 +124,9 @@ export function useBoard() {
      * the local state with the new grid and generation count.
      * 
      * @param steps - The number of generations to advance (typically 1)
+     * @param onError - Callback function to display error messages to the user
      */
-    const advance = useCallback(async (steps: number) => {
+    const advance = useCallback(async (steps: number, onError: (message: string) => void ) => {
         if (!boardId) return;
 
         setIsLoading(true);
@@ -131,12 +143,15 @@ export function useBoard() {
 
             // Update state:
             setBoardState(boardState);
+        } catch (error: any) {
+            // Show error to user
+            if (error.userMessage) {
+                onError(error.userMessage);
+            }
         } finally {
             setIsLoading(false);
         }
-    },
-        [boardId]
-    );
+    }, [boardId]);
 
     /**
      * Resets the board and clears all stored data.

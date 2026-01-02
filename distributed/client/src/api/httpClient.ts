@@ -24,6 +24,49 @@ const axiosInstance: AxiosInstance = axios.create({
 //   }
 // })
 
+// Response interceptor for error handling
+axiosInstance.interceptors.response.use(
+  (response) => {
+    // If the response is successful, just return it
+    return response;
+  },
+  (error) => {
+    // Determine the error message based on the error type
+    let errorMessage = 'An unexpected error occurred. Please try again.';
+
+    if (error.code === 'ECONNABORTED') {
+      // Timeout error
+      errorMessage = 'The request took too long. Please check your connection and try again.';
+    } else if (error.code === 'ERR_NETWORK' || !error.response) {
+      // Network error - backend is not available
+      errorMessage = 'Cannot connect to the server. Please make sure the backend is running.';
+    } else if (error.response) {
+      // Server responded with an error status
+      const status = error.response.status;
+
+      if (status >= 500) {
+        // Server error
+        errorMessage = 'The server encountered an error. Please try again later.';
+      } else if (status === 404) {
+        // Not found
+        errorMessage = 'The requested resource was not found.';
+      } else if (status === 400) {
+        // Bad request
+        errorMessage = 'Invalid request. Please check your input and try again.';
+      } else if (status >= 400 && status < 500) {
+        // Other client errors
+        errorMessage = 'There was a problem with your request. Please try again.';
+      }
+    }
+
+    // Attach the user-friendly message to the error
+    error.userMessage = errorMessage;
+
+    // Reject the promise so the calling code can handle it
+    return Promise.reject(error);
+  }
+);
+
 // Extract only the data
 const getResponseBody = <T>(response: AxiosResponse<T>) => response.data;
 
