@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Rules;
+using Microsoft.Extensions.Logging;
 
 namespace Conways.Service.Domain.Simulation;
 
@@ -11,10 +12,12 @@ namespace Conways.Service.Domain.Simulation;
 public sealed class BoardSimulationService
 {
     private readonly NextGenerationCalculator _nextGenerationCalculator;
+    private readonly ILogger<BoardSimulationService> _logger;
 
-    public BoardSimulationService(NextGenerationCalculator nextGenerationCalculator)
+    public BoardSimulationService(NextGenerationCalculator nextGenerationCalculator, ILogger<BoardSimulationService> logger)
     {
         _nextGenerationCalculator = nextGenerationCalculator;
+        _logger = logger;
     }
 
     /// <summary>
@@ -22,6 +25,8 @@ public sealed class BoardSimulationService
     /// </summary>
     public SimulationResult SimulateUntilConclusion(BoardState initialState, int maxIterations)
     {
+        _logger.LogInformation("Starting simulation. Max iterations: {MaxIterations}", maxIterations);
+
         var visitedStateHashes = new HashSet<string>();
         var currentState = initialState;
 
@@ -32,6 +37,7 @@ public sealed class BoardSimulationService
             // Check for patterns that repeat (Oscillation)
             if (!visitedStateHashes.Add(currentStateHash))
             {
+                _logger.LogInformation("Simulation finished: Oscillation detected at generation {Generation}", currentState.Generation);
                 return new SimulationResult
                 (
                     currentState,
@@ -44,6 +50,7 @@ public sealed class BoardSimulationService
             // Check if the grid has stopped changing (Stable State)
             if (AreGridsEqual(currentState.Grid, nextGrid))
             {
+                _logger.LogInformation("Simulation finished: Stable state reached at generation {Generation}", currentState.Generation);
                 return new SimulationResult
                 (
                     currentState,
@@ -51,6 +58,7 @@ public sealed class BoardSimulationService
                 );
             }
 
+            _logger.LogInformation("Simulation finished: Reached maximum iterations ({MaxIterations})", maxIterations);
             currentState = new BoardState
             (
                 grid: nextGrid,
@@ -79,8 +87,7 @@ public sealed class BoardSimulationService
         var rawRepresentation = string.Join(",", flattenedCells);
 
         using var sha256 = SHA256.Create();
-        var hashBytes = sha256.ComputeHash(
-            Encoding.UTF8.GetBytes(rawRepresentation));
+        var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(rawRepresentation));
 
         return Convert.ToBase64String(hashBytes);
     }

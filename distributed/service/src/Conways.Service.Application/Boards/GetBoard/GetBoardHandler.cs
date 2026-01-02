@@ -1,5 +1,6 @@
 using Conways.Service.Application.Abstractions;
 using Conways.Service.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Conways.Service.Application.Boards.GetBoard;
 
@@ -9,10 +10,12 @@ namespace Conways.Service.Application.Boards.GetBoard;
 public sealed class GetBoardHandler : IQueryHandler<GetBoardQuery, GetBoardResult>
 {
     private readonly IBoardRepository _boardRepository;
+    private readonly ILogger<GetBoardHandler> _logger;
 
-    public GetBoardHandler(IBoardRepository boardRepository)
+    public GetBoardHandler(IBoardRepository boardRepository, ILogger<GetBoardHandler> logger)
     {
         _boardRepository = boardRepository;
+        _logger = logger;
     }
 
     public async Task<GetBoardResult> HandleAsync(GetBoardQuery command, CancellationToken cancellationToken)
@@ -21,6 +24,7 @@ public sealed class GetBoardHandler : IQueryHandler<GetBoardQuery, GetBoardResul
 
         if (board is null)
         {
+            _logger.LogWarning("Query failed: Board {BoardId} does not exist.", command.BoardId.Value);
             throw new InvalidOperationException($"Board with id '{command.BoardId.Value}' was not found.");
         }
 

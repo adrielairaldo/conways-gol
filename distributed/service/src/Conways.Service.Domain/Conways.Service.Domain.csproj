@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Dependency needed to extend IServiceCollection -->
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" /> <!-- Dependency needed to extend IServiceCollection -->
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" /> <!-- For logging capabilities -->
   </ItemGroup>
 
 </Project>

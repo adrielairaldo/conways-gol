@@ -6,7 +6,7 @@ using Conways.Service.Domain.Simulation;
 using Conways.Service.Domain.TestData;
 
 using FluentAssertions;
-
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace Conways.Service.Application.Tests.Boards;
@@ -23,9 +23,14 @@ public sealed class SimulateUntilConclusionHandlerTests
     {
         _boardRepositoryMock = new Mock<IBoardRepository>();
         _nextGenerationCalculator = new NextGenerationCalculator(new AliveNeighborCounter());
-        _boardSimulationService = new BoardSimulationService(_nextGenerationCalculator);
+        _boardSimulationService = new BoardSimulationService(_nextGenerationCalculator, NullLogger<BoardSimulationService>.Instance);
 
-        _handler = new SimulateUntilConclusionHandler(_boardRepositoryMock.Object, _boardSimulationService);
+        _handler = new SimulateUntilConclusionHandler
+        (
+            _boardRepositoryMock.Object,
+            _boardSimulationService,
+            NullLogger<SimulateUntilConclusionHandler>.Instance
+        );
     }
 
     [Fact]

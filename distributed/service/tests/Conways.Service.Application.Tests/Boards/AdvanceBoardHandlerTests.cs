@@ -5,7 +5,7 @@ using Conways.Service.Domain.Rules;
 using Conways.Service.Domain.TestData;
 
 using FluentAssertions;
-
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace Conways.Service.Application.Tests.Boards;
@@ -22,7 +22,12 @@ public sealed class AdvanceBoardHandlerTests
         var aliveNeighborCounter = new AliveNeighborCounter();
         var nextGenerationCalculator = new NextGenerationCalculator(aliveNeighborCounter);
 
-        _handler = new AdvanceBoardHandler(_boardRepositoryMock.Object, nextGenerationCalculator);
+        _handler = new AdvanceBoardHandler
+        (
+            _boardRepositoryMock.Object,
+            nextGenerationCalculator,
+            NullLogger<AdvanceBoardHandler>.Instance
+        );
     }
 
     [Fact]

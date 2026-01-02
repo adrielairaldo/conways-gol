@@ -2,6 +2,7 @@ using Conways.Service.Application.Abstractions;
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Repositories;
 using Conways.Service.Domain.Rules;
+using Microsoft.Extensions.Logging;
 
 namespace Conways.Service.Application.Boards.AdvanceBoard;
 
@@ -12,19 +13,24 @@ public sealed class AdvanceBoardHandler : ICommandHandler<AdvanceBoardCommand, A
 {
     private readonly IBoardRepository _boardRepository;
     private readonly NextGenerationCalculator _nextGenerationCalculator;
+    private readonly ILogger<AdvanceBoardHandler> _logger;
 
-    public AdvanceBoardHandler(IBoardRepository boardRepository, NextGenerationCalculator nextGenerationCalculator)
+    public AdvanceBoardHandler(IBoardRepository boardRepository, NextGenerationCalculator nextGenerationCalculator, ILogger<AdvanceBoardHandler> logger)
     {
         _boardRepository = boardRepository;
         _nextGenerationCalculator = nextGenerationCalculator;
+        _logger = logger;
     }
 
     public async Task<AdvanceBoardResult> HandleAsync(AdvanceBoardCommand command, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Advancing board {BoardId} by {Steps} steps.", command.BoardId.Value, command.Steps);
+
         var board = await _boardRepository.GetByIdAsync(command.BoardId, cancellationToken);
 
         if (board is null)
         {
+            _logger.LogWarning("Board {BoardId} not found for advancement.", command.BoardId.Value);
             throw new InvalidOperationException($"Board with id '{command.BoardId.Value}' was not found.");
         }
 
@@ -44,6 +50,9 @@ public sealed class AdvanceBoardHandler : ICommandHandler<AdvanceBoardCommand, A
         board.AdvanceTo(currentState);
 
         await _boardRepository.SaveAsync(board, cancellationToken);
+
+        _logger.LogInformation("Board {BoardId} successfully advanced to generation {Generation}.",
+                                command.BoardId.Value, currentState.Generation);
 
         return new AdvanceBoardResult(currentState);
     }

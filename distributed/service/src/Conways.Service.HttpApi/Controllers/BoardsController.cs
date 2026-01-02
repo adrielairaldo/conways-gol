@@ -17,6 +17,12 @@ namespace Showcase.ShopManagement.HttpApi.Controllers;
 [Route("api/[controller]")]
 public class BoardsController : ControllerBase
 {
+    private readonly ILogger<BoardsController> _logger;
+
+    public BoardsController(ILogger<BoardsController> logger)
+    {
+        _logger = logger;
+    }
 
     /// <summary>
     /// Creates a new board with an initial grid configuration.
@@ -37,6 +43,8 @@ public class BoardsController : ControllerBase
         CancellationToken cancellationToken
     )
     {
+        _logger.LogInformation("HTTP Request: Creating a new board.");
+
         var command = new CreateBoardCommand(new Grid(request.InitialGrid));
 
         var result = await handler.HandleAsync(command, cancellationToken);
@@ -61,6 +69,8 @@ public class BoardsController : ControllerBase
         [FromServices] IQueryHandler<GetBoardQuery, GetBoardResult> service
     )
     {
+        _logger.LogInformation("HTTP Request: Fetching board {BoardId}.", boardId);
+
         var query = new GetBoardQuery(new BoardId(boardId));
 
         var result = await service.HandleAsync(query, CancellationToken.None);
@@ -88,6 +98,8 @@ public class BoardsController : ControllerBase
         CancellationToken cancellationToken
     )
     {
+        _logger.LogInformation("HTTP Request: Advancing board {BoardId} by {Steps} steps.", boardId, request.Steps);
+
         var command = new AdvanceBoardCommand
         (
             BoardId: new BoardId(boardId),
@@ -119,6 +131,8 @@ public class BoardsController : ControllerBase
         CancellationToken cancellationToken
     )
     {
+        _logger.LogInformation("HTTP Request: Simulating board {BoardId} to conclusion.", boardId);
+
         var command = new SimulateUntilConclusionCommand
         (
             BoardId: new BoardId(boardId),

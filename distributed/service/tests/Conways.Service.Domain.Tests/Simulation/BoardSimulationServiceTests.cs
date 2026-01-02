@@ -4,6 +4,7 @@ using Conways.Service.Domain.Simulation;
 using Conways.Service.Domain.TestData;
 
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Conways.Service.Domain.Tests.Simulation;
 
@@ -16,7 +17,11 @@ public sealed class BoardSimulationServiceTests
         var aliveNeighborCounter = new AliveNeighborCounter();
         var nextGenerationCalculator = new NextGenerationCalculator(aliveNeighborCounter);
 
-        _simulationService = new BoardSimulationService(nextGenerationCalculator);
+        _simulationService = new BoardSimulationService
+        (
+            nextGenerationCalculator,
+            NullLogger<BoardSimulationService>.Instance
+        );
     }
 
     [Fact]

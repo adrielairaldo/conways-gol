@@ -1,6 +1,7 @@
 using Conways.Service.Application.Abstractions;
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Conways.Service.Application.Boards.CreateBoard;
 
@@ -10,10 +11,12 @@ namespace Conways.Service.Application.Boards.CreateBoard;
 public sealed class CreateBoardHandler : ICommandHandler<CreateBoardCommand, CreateBoardResult>
 {
     private readonly IBoardRepository _boardRepository;
+    private readonly ILogger<CreateBoardHandler> _logger;
 
-    public CreateBoardHandler(IBoardRepository boardRepository)
+    public CreateBoardHandler(IBoardRepository boardRepository, ILogger<CreateBoardHandler> logger)
     {
         _boardRepository = boardRepository;
+        _logger = logger;
     }
 
     public async Task<CreateBoardResult> HandleAsync(CreateBoardCommand command, CancellationToken cancellationToken)
@@ -29,6 +32,8 @@ public sealed class CreateBoardHandler : ICommandHandler<CreateBoardCommand, Cre
         var board = new Board(boardId, initialBoardState);
 
         await _boardRepository.SaveAsync(board, cancellationToken);
+
+        _logger.LogInformation("New board created with ID: {BoardId}", boardId.Value);
 
         return new CreateBoardResult(boardId);
     }

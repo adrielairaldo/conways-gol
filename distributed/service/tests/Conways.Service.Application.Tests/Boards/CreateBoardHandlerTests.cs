@@ -3,7 +3,7 @@ using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Repositories;
 
 using FluentAssertions;
-
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace Conways.Service.Application.Tests.Boards;
@@ -16,7 +16,7 @@ public sealed class CreateBoardHandlerTests
     public CreateBoardHandlerTests()
     {
         _boardRepositoryMock = new Mock<IBoardRepository>();
-        _handler = new CreateBoardHandler(_boardRepositoryMock.Object);
+        _handler = new CreateBoardHandler(_boardRepositoryMock.Object, NullLogger<CreateBoardHandler>.Instance);
     }
 
     [Fact]
