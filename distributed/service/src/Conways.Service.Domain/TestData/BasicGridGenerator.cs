@@ -26,7 +26,7 @@ public static class BasicGridGenerator
         ]
     );
 
-    public static Grid Glider() => new
+    public static Grid Glider3x3() => new
     (
         [
             [CellState.Dead,  CellState.Alive, CellState.Dead ],
