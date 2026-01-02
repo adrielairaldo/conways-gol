@@ -18,4 +18,19 @@
     <ProjectReference Include="..\Conways.Service.Infrastructure.MongoDb\Conways.Service.Infrastructure.MongoDb.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <Company>César Adriel Airaldo</Company>
+    <Authors>César Adriel Airaldo</Authors>
+    <Product>Conway's Game of Life</Product>
+    <Description>
+      Conway's Game of Life backend implementation.
+      Author: César Adriel Airaldo
+      LinkedIn: https://www.linkedin.com/in/adrielairaldo/
+      Email: adrielairaldo@hotmail.com | adrielairaldo@gmail.com
+    </Description>
+    <Copyright>
+      © César Adriel Airaldo
+    </Copyright>
+  </PropertyGroup>
+
 </Project>

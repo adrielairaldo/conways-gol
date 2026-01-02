@@ -116,3 +116,14 @@ To stop and remove volumes (this will delete all game data):
 ```powershell
 docker-compose down -v
 ```
+
+# Author
+
+**César Adriel Airaldo**
+
+- LinkedIn: [linkedin.com/in/adrielairaldo](https://www.linkedin.com/in/adrielairaldo/)
+- Email: adrielairaldo@hotmail.com | adrielairaldo@gmail.com
+
+---
+
+*This project was developed as a demonstration of full-stack development skills using React, TypeScript, and modern architectural patterns.*
