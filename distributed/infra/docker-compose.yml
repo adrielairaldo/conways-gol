@@ -1,0 +1,65 @@
+name: conways
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ''
+      MONGO_INITDB_ROOT_PASSWORD: ''
+    networks:
+      - default
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodbdata:/data/db
+      - mongodbconfig:/data/configdb
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  conways.service:
+    image: adrielairaldo/conways.service:0.1.0
+    container_name: conways.service
+    environment:
+      MongoDbSettings__ConnectionString: mongodb://mongo:27017/
+      MongoDbSettings__DatabaseName: ConwaysGameOfLife
+      CorsSettings__AllowedOrigins__0: http://localhost:3000
+    networks:
+      - default
+    ports:
+      - "5000:5000"
+    restart: on-failure
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+  conways.client:
+    image: adrielairaldo/conways.client:0.1.0
+    container_name: conways.client
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+    restart: on-failure
+
+volumes:
+  mongodbdata:
+    name: mongodbdata
+    external: true
+  mongodbconfig:
+    name: mongodbconfig
+    external: true
+
+networks:
+  default:
+    driver: bridge
