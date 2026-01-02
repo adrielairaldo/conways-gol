@@ -1,0 +1,26 @@
+# Node modules
+node_modules
+
+# Dist folder (will be generated in Docker build)
+dist
+
+# Git and GitHub
+.git
+.github
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# Local environment files (you can adjust this depending on what you want to include)
+.env.development
+
+# Logs
+*.log
+
+# Test files (if you have test files that should not be part of the production build)
+*.test.*
+*.spec.*
+
+# Documentation files
+*.md
