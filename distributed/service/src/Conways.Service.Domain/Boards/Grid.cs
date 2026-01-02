@@ -1,9 +1,11 @@
 namespace Conways.Service.Domain.Boards;
 
+/// <summary>
+/// Represents the two-dimensional layout of cells.
+/// </summary>
 public sealed class Grid
 {
     public IReadOnlyList<IReadOnlyList<CellState>> Cells { get; }
-
     public int TotalRows => Cells.Count;
     public int TotalColumns => Cells[0].Count;
 
@@ -11,7 +13,6 @@ public sealed class Grid
     {
         EnsureGridIsNotEmpty(cells);
         EnsureAllRowsHaveSameLength(cells);
-
         Cells = cells;
     }
 

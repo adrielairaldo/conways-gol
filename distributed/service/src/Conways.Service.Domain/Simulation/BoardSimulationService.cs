@@ -5,6 +5,9 @@ using Conways.Service.Domain.Rules;
 
 namespace Conways.Service.Domain.Simulation;
 
+/// <summary>
+/// Orchestrates the simulation process, running generations until a conclusion is reached.
+/// </summary>
 public sealed class BoardSimulationService
 {
     private readonly NextGenerationCalculator _nextGenerationCalculator;
@@ -14,6 +17,9 @@ public sealed class BoardSimulationService
         _nextGenerationCalculator = nextGenerationCalculator;
     }
 
+    /// <summary>
+    /// Runs the simulation from an initial state until it stabilizes, oscillates, or hits the iteration limit.
+    /// </summary>
     public SimulationResult SimulateUntilConclusion(BoardState initialState, int maxIterations)
     {
         var visitedStateHashes = new HashSet<string>();
@@ -23,6 +29,7 @@ public sealed class BoardSimulationService
         {
             var currentStateHash = ComputeStateHash(currentState.Grid);
 
+            // Check for patterns that repeat (Oscillation)
             if (!visitedStateHashes.Add(currentStateHash))
             {
                 return new SimulationResult
@@ -34,6 +41,7 @@ public sealed class BoardSimulationService
 
             var nextGrid = _nextGenerationCalculator.Calculate(currentState.Grid);
 
+            // Check if the grid has stopped changing (Stable State)
             if (AreGridsEqual(currentState.Grid, nextGrid))
             {
                 return new SimulationResult

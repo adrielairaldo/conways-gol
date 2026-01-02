@@ -1,5 +1,8 @@
 namespace Conways.Service.Domain.Boards;
 
+/// <summary>
+/// Represents a snapshot of the grid at a specific generation.
+/// </summary>
 public sealed class BoardState
 {
     public Grid Grid { get; }

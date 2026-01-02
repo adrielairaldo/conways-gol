@@ -3,8 +3,14 @@ using Conways.Service.Infrastructure.MongoDb.Documents;
 
 namespace Conways.Service.Infrastructure.MongoDb.Mappings;
 
+/// <summary>
+/// Provides extension methods to map between the Domain layer and the MongoDb Infrastructure layer.
+/// </summary>
 internal static class BoardMapper
 {
+    /// <summary>
+    /// Converts a Domain Board entity into a MongoDb document for storage.
+    /// </summary>
     public static BoardDocument ToDocument(this Board board) => new()
     {
         Id = board.Id.Value,
@@ -20,6 +26,9 @@ internal static class BoardMapper
         }
     };
 
+    /// <summary>
+    /// Reconstructs a Domain Board entity from a document retrieved from MongoDb.
+    /// </summary>
     public static Board ToDomain(this BoardDocument document)
     {
         var gridCells = document.CurrentState.Grid.Cells

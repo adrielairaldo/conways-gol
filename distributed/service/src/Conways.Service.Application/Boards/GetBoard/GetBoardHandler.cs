@@ -3,6 +3,9 @@ using Conways.Service.Domain.Repositories;
 
 namespace Conways.Service.Application.Boards.GetBoard;
 
+/// <summary>
+/// Retrieves the current state of an existing board.
+/// </summary>
 public sealed class GetBoardHandler : IQueryHandler<GetBoardQuery, GetBoardResult>
 {
     private readonly IBoardRepository _boardRepository;

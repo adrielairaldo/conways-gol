@@ -4,6 +4,9 @@ using Conways.Service.Domain.Repositories;
 
 namespace Conways.Service.Application.Boards.CreateBoard;
 
+/// <summary>
+/// Handles the creation of a new Game of Life board.
+/// </summary>
 public sealed class CreateBoardHandler : ICommandHandler<CreateBoardCommand, CreateBoardResult>
 {
     private readonly IBoardRepository _boardRepository;

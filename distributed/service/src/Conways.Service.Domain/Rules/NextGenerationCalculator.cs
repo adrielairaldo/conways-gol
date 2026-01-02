@@ -2,6 +2,9 @@ using Conways.Service.Domain.Boards;
 
 namespace Conways.Service.Domain.Rules;
 
+/// <summary>
+/// Service that applies the Game of Life rules to produce the next grid state.
+/// </summary>
 public sealed class NextGenerationCalculator
 {
     private readonly AliveNeighborCounter _aliveNeighborCounter;
@@ -11,6 +14,9 @@ public sealed class NextGenerationCalculator
         _aliveNeighborCounter = aliveNeighborCounter;
     }
 
+    /// <summary>
+    /// Evaluates the current grid and returns a new Grid based on survival and birth rules.
+    /// </summary>
     public Grid Calculate(Grid currentGrid)
     {
         var nextCells = currentGrid.Cells

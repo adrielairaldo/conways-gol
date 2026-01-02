@@ -1,5 +1,8 @@
 namespace Conways.Service.Domain.Boards;
 
+/// <summary>
+/// Represents the root entity for a Game of Life board.
+/// </summary>
 public sealed class Board
 {
     public BoardId Id { get; }
@@ -11,6 +14,9 @@ public sealed class Board
         CurrentState = initialState;
     }
 
+    /// <summary>
+    /// Updates the board to a new state/generation.
+    /// </summary>
     public void AdvanceTo(BoardState nextState)
     {
         CurrentState = nextState;

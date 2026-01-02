@@ -5,6 +5,9 @@ using Conways.Service.Domain.Rules;
 
 namespace Conways.Service.Application.Boards.AdvanceBoard;
 
+/// <summary>
+/// Handles the logic for moving a board forward by a specific number of generations.
+/// </summary>
 public sealed class AdvanceBoardHandler : ICommandHandler<AdvanceBoardCommand, AdvanceBoardResult>
 {
     private readonly IBoardRepository _boardRepository;

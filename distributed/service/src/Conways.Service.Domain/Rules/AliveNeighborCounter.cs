@@ -2,6 +2,9 @@ using Conways.Service.Domain.Boards;
 
 namespace Conways.Service.Domain.Rules;
 
+/// <summary>
+/// Service that calculates how many living neighbors a specific cell has.
+/// </summary>
 public sealed class AliveNeighborCounter
 {
     public int Count(Grid grid, int targetRow, int targetColumn)

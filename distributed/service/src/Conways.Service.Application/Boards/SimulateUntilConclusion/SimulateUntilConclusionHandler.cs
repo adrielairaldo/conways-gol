@@ -4,6 +4,9 @@ using Conways.Service.Domain.Simulation;
 
 namespace Conways.Service.Application.Boards.SimulateUntilConclusion;
 
+/// <summary>
+/// Triggers a simulation to find the final state or pattern of a board.
+/// </summary>
 public sealed class SimulateUntilConclusionHandler : ICommandHandler<SimulateUntilConclusionCommand, SimulateUntilConclusionResult>
 {
     private readonly IBoardRepository _boardRepository;
