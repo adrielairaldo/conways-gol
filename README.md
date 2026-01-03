@@ -70,10 +70,10 @@ distributed/
   - No business logic on the client side
 
 - **Service** (`distributed/service/`): 
-  - Backend API built with [your framework - ASP.NET Core?]
+  - Backend API built with ASP.NET Core 8
   - Implements Conway's Game of Life rules and logic
   - Manages game state persistence in MongoDB
-  - Exposes RESTful API endpoints
+  - Exposes API endpoints
 
 - **Infrastructure** (`distributed/infra/`): 
   - Docker Compose configuration
