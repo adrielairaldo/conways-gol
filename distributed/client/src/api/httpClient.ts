@@ -1,5 +1,5 @@
-import axios, { type AxiosInstance, type AxiosResponse } from "axios";
-
+import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import { ZodError } from 'zod';
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -34,7 +34,10 @@ axiosInstance.interceptors.response.use(
     // Determine the error message based on the error type
     let errorMessage = 'An unexpected error occurred. Please try again.';
 
-    if (error.code === 'ECONNABORTED') {
+    // Handle Zod validation errors
+    if (error instanceof ZodError) {
+      errorMessage = 'The server response format is invalid. Please contact support.';
+    } else if (error.code === 'ECONNABORTED') {
       // Timeout error
       errorMessage = 'The request took too long. Please check your connection and try again.';
     } else if (error.code === 'ERR_NETWORK' || !error.response) {
