@@ -1,5 +1,3 @@
-//import '../styles/controls.css';
-
 interface Props {
     isGameStarted: boolean;
     disabled: boolean;
@@ -28,10 +26,7 @@ interface Props {
 export const Controls: React.FC<Props> = ({
     isGameStarted, disabled, rowCount, columnCount, onGridSizeChange, onCreateBoard, onAdvance, generation, onReset
 }) => (
-    <div
-        //className="controls"
-        className="flex flex-wrap items-center justify-center gap-4 mb-8"
-    >
+    <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
         {!isGameStarted && (
             <>
                 <label>

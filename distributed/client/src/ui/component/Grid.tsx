@@ -22,9 +22,7 @@ export const Grid: React.FC<GridProps> = ({ disabled, grid, onCellToggle }) => {
     return (
         <div className="flex justify-center items-start">
             <div className="relative">
-                <div
-                    //className="grid"
-                    className="inline-grid gap-0 p-4 bg-gray-900 rounded-xl border border-gray-800 shadow-2xl"
+                <div className="inline-grid gap-0 p-4 bg-gray-900 rounded-xl border border-gray-800 shadow-2xl"
                     style={{
                         gridTemplateColumns: `repeat(${grid[0].length}, 20px)`,
                     }}

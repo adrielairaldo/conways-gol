@@ -102,10 +102,7 @@ export const App: React.FC = () => {
   }, [recoverPreviousSessionIfAny]);
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-white py-8 px-4"
-      //style={{ textAlign: "center", padding: '1rem' }}
-    >
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-white py-8 px-4">
       {/* Toast Notification */}
       {errorMessage && (
         <Toast message={errorMessage} onClose={closeError} />
