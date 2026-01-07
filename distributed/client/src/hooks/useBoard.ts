@@ -24,7 +24,7 @@ export function useBoard() {
     const [boardState, setBoardState] = useState<BoardState | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    const STORED_BOARD_ID_KEY = "conways-game-of-life.board-id";
+    const STORED_BOARD_ID_KEY = import.meta.env.VITE_STORED_BOARD_ID_KEY;
 
     /**
      * Attempts to recover a board from a previous session using localStorage.
