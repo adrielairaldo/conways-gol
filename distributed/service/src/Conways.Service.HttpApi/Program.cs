@@ -3,6 +3,7 @@ using Conways.Service.Domain;
 using Conways.Service.HttpApi.Extensions;
 using Conways.Service.HttpApi.Extensions.CorsSettings;
 using Conways.Service.Infrastructure.MongoDb;
+using Conways.Service.Infrastructure.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddDomainLayerServices();
 builder.Services.AddApplicationLayerServices(builder.Configuration);
 builder.Services.AddInfrastructureMongoDbServices(builder.Configuration);
+builder.Services.AddInfrastructureRedisServices(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
