@@ -13,11 +13,13 @@ namespace Conways.Service.Application.Tests.Boards;
 public sealed class AdvanceBoardHandlerTests
 {
     private readonly Mock<IBoardRepository> _boardRepositoryMock;
+    private readonly Mock<ICacheService> _cacheServiceMock;
     private readonly AdvanceBoardHandler _handler;
 
     public AdvanceBoardHandlerTests()
     {
         _boardRepositoryMock = new Mock<IBoardRepository>();
+        _cacheServiceMock = new Mock<ICacheService>();
 
         var aliveNeighborCounter = new AliveNeighborCounter();
         var nextGenerationCalculator = new NextGenerationCalculator(aliveNeighborCounter);
@@ -25,6 +27,7 @@ public sealed class AdvanceBoardHandlerTests
         _handler = new AdvanceBoardHandler
         (
             _boardRepositoryMock.Object,
+            _cacheServiceMock.Object,
             nextGenerationCalculator,
             NullLogger<AdvanceBoardHandler>.Instance
         );

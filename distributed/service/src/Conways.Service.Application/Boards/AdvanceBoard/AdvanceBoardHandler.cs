@@ -1,7 +1,9 @@
 using Conways.Service.Application.Abstractions;
+using Conways.Service.Application.Cache;
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Repositories;
 using Conways.Service.Domain.Rules;
+
 using Microsoft.Extensions.Logging;
 
 namespace Conways.Service.Application.Boards.AdvanceBoard;
@@ -12,13 +14,16 @@ namespace Conways.Service.Application.Boards.AdvanceBoard;
 public sealed class AdvanceBoardHandler : ICommandHandler<AdvanceBoardCommand, AdvanceBoardResult>
 {
     private readonly IBoardRepository _boardRepository;
+    private readonly ICacheService _cacheService;
+
     private readonly NextGenerationCalculator _nextGenerationCalculator;
     private readonly ILogger<AdvanceBoardHandler> _logger;
 
-    public AdvanceBoardHandler(IBoardRepository boardRepository, NextGenerationCalculator nextGenerationCalculator, ILogger<AdvanceBoardHandler> logger)
+    public AdvanceBoardHandler(IBoardRepository boardRepository, ICacheService cacheService, NextGenerationCalculator nextGenerationCalculator, ILogger<AdvanceBoardHandler> logger)
     {
         _boardRepository = boardRepository;
         _nextGenerationCalculator = nextGenerationCalculator;
+        _cacheService = cacheService;
         _logger = logger;
     }
 
@@ -53,6 +58,8 @@ public sealed class AdvanceBoardHandler : ICommandHandler<AdvanceBoardCommand, A
 
         _logger.LogInformation("Board {BoardId} successfully advanced to generation {Generation}.",
                                 command.BoardId.Value, currentState.Generation);
+
+        await _cacheService.RemoveAsync(command.BoardId.ToCacheKey(), cancellationToken);
 
         return new AdvanceBoardResult(currentState);
     }

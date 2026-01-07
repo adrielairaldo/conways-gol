@@ -2,6 +2,7 @@ using Conways.Service.Application.Boards.GetBoard;
 using Conways.Service.Domain.Boards;
 using Conways.Service.Domain.Repositories;
 using Conways.Service.Domain.TestData;
+using Conways.Service.Application.Cache;
 
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -12,12 +13,14 @@ namespace Conways.Service.Application.Tests.Boards;
 public sealed class GetBoardHandlerTests
 {
     private readonly Mock<IBoardRepository> _boardRepositoryMock;
+    private readonly Mock<ICacheService> _cacheServiceMock;
     private readonly GetBoardHandler _handler;
 
     public GetBoardHandlerTests()
     {
         _boardRepositoryMock = new Mock<IBoardRepository>();
-        _handler = new GetBoardHandler(_boardRepositoryMock.Object, NullLogger<GetBoardHandler>.Instance);
+        _cacheServiceMock = new Mock<ICacheService>();
+        _handler = new GetBoardHandler(_boardRepositoryMock.Object, _cacheServiceMock.Object, NullLogger<GetBoardHandler>.Instance);
     }
 
     [Fact]
@@ -35,6 +38,13 @@ public sealed class GetBoardHandlerTests
         var board = new Board(boardId, boardState);
 
         var query = new GetBoardQuery(boardId);
+
+        _cacheServiceMock
+            .Setup(cache =>
+                cache.GetAsync<GetBoardResult>(
+                    boardId.ToCacheKey(),
+                    It.IsAny<CancellationToken>()))
+            .ReturnsAsync((GetBoardResult?)null);
 
         _boardRepositoryMock
             .Setup(repository =>
@@ -54,6 +64,13 @@ public sealed class GetBoardHandlerTests
         // Arrange
         var boardId = BoardId.New();
         var query = new GetBoardQuery(boardId);
+
+        _cacheServiceMock
+            .Setup(cache =>
+                cache.GetAsync<GetBoardResult>(
+                    boardId.ToCacheKey(),
+                    It.IsAny<CancellationToken>()))
+            .ReturnsAsync((GetBoardResult?)null);
 
         _boardRepositoryMock
             .Setup(repository =>
