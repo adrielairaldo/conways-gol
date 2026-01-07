@@ -1,6 +1,6 @@
+import React from 'react';
 import { Cell } from './Cell';
 import { CellState } from '../../domain/CellState';
-//import '../styles/grid.css';
 
 interface GridProps {
     disabled: boolean;
@@ -18,7 +18,7 @@ interface GridProps {
  * The grid size is dynamic and automatically adjusts based on the number of
  * columns in the provided grid data.
  */
-export const Grid: React.FC<GridProps> = ({ disabled, grid, onCellToggle }) => {
+export const Grid: React.FC<GridProps> = React.memo(({ disabled, grid, onCellToggle }) => {
     return (
         <div className="flex justify-center items-start">
             <div className="relative">
@@ -58,4 +58,4 @@ export const Grid: React.FC<GridProps> = ({ disabled, grid, onCellToggle }) => {
             </div>
         </div>
     );
-}
+})

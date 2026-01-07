@@ -1,3 +1,5 @@
+import React from "react";
+
 interface Props {
     isGameStarted: boolean;
     disabled: boolean;
@@ -23,7 +25,7 @@ interface Props {
  * 
  * All controls can be disabled simultaneously (e.g., during API calls) using the disabled prop.
  */
-export const Controls: React.FC<Props> = ({
+export const Controls: React.FC<Props> = React.memo(({
     isGameStarted, disabled, rowCount, columnCount, onGridSizeChange, onCreateBoard, onAdvance, generation, onReset
 }) => (
     <div className="flex flex-wrap items-center justify-center gap-4 mb-8">
@@ -87,4 +89,4 @@ export const Controls: React.FC<Props> = ({
             </>
         )}
     </div>
-);
+));
