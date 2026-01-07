@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Conways.Service.Application\Conways.Service.Application.csproj" />
     <ProjectReference Include="..\Conways.Service.Infrastructure.MongoDb\Conways.Service.Infrastructure.MongoDb.csproj" />
+    <ProjectReference Include="..\Conways.Service.Infrastructure.Redis\Conways.Service.Infrastructure.Redis.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
