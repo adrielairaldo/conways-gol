@@ -8,7 +8,7 @@ using Conways.Service.HttpApi.Contracts;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Showcase.ShopManagement.HttpApi.Controllers;
+namespace Conways.Service.HttpApi.Controllers;
 
 /// <summary>
 /// Provides endpoints to manage and simulate Conway's Game of Life boards.

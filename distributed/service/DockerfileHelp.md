@@ -1,5 +1,5 @@
 # Getting Started
-Instructions for configuring, creating and running the Showcase.ShopManagement Docker image.
+Instructions for configuring, creating and running the Conways.Service Docker image.
 
 ## Common variables
 ```powershell
