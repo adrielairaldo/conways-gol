@@ -1,0 +1,85 @@
+name: conways
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ''
+      MONGO_INITDB_ROOT_PASSWORD: ''
+    networks:
+      - default
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodbdata:/data/db
+      - mongodbconfig:/data/configdb
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  redis:
+    image: redis:7
+    container_name: redis
+    command: ["redis-server", "--requirepass", "myredispassword"]
+    networks:
+      - default
+    ports:
+      - "6379:6379"
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "myredispassword", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  conways.service:
+    image: conways.service:0.2.0
+    container_name: conways.service
+    environment:
+      MongoDbSettings__ConnectionString: mongodb://mongo:27017/
+      MongoDbSettings__DatabaseName: ConwaysGameOfLife
+      RedisSettings__ConnectionString: redis:6379,password=myredispassword
+      CorsSettings__AllowedOrigins__0: http://localhost:3000
+    networks:
+      - default
+    ports:
+      - "5000:5000"
+    restart: on-failure
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+  conways.client:
+    image: conways.client:0.2.0
+    container_name: conways.client
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+    restart: on-failure
+
+volumes:
+  mongodbdata:
+    name: mongodbdata
+    external: true
+  mongodbconfig:
+    name: mongodbconfig
+    external: true
+
+networks:
+  default:
+    driver: bridge
