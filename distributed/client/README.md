@@ -1,8 +1,8 @@
-# Conway's Game of Life - Architecture Documentation
+# Conway's Game of Life **Client**
 
 ## Overview
 
-This application is a React-based frontend fClient or Conway's Game of Life that communicates with a backend API to handle game logic. The architecture follows a clean separation of concerns with distinct layers for presentation, business logic, and data access.
+This application is a React-based frontend Client for Conway's Game of Life that communicates with a backend API to handle game logic. The architecture follows a clean separation of concerns with distinct layers for presentation, business logic, and data access.
 
 ## Architecture Diagram
 
@@ -89,7 +89,7 @@ graph TD
 
 **Structure**:
 
-#### HTTP Client (`axiosConfig.ts`)
+#### HTTP Client (`httpClient.ts`)
 - Configures axios instance with base URL and timeout
 - Implements response interceptor for centralized error handling
 - Transforms technical errors into user-friendly messages
@@ -99,13 +99,19 @@ graph TD
   - Client errors (4xx status codes)
   - Timeout errors
 
-#### API Service (`BoardsApi.ts`)
+#### API Service (`boardsApi.ts`)
 - Provides functions for each API endpoint:
   - `getBoard()`: Retrieves board state by ID
   - `createBoard()`: Creates a new board with initial grid
   - `advanceBoard()`: Advances board by specified generations
 - Uses the configured HTTP client for all requests
-- Returns typed responses
+- Returns typed responses with runtime validation
+
+#### Schema Validation (`schemas/boardSchemas.ts`)
+- Uses Zod for runtime validation of API responses
+- Ensures data from the backend matches expected types
+- Catches API contract mismatches at runtime
+- Provides clear error messages for debugging
 
 #### HTTP Contracts
 We follow a **dogmatic approach** by replicating the API contracts exactly as defined by the backend. This means:
@@ -113,6 +119,7 @@ We follow a **dogmatic approach** by replicating the API contracts exactly as de
 - No transformation or mapping logic in the API layer
 - Direct one-to-one relationship between frontend and backend models
 - Changes to API contracts require updates in both frontend and backend
+- Runtime validation with Zod ensures contract integrity
 
 **Example**:
 ```typescript
@@ -126,6 +133,12 @@ interface GetBoardResponse {
   grid: number[][];
   generation: number;
 }
+
+// Zod schema validates the response at runtime
+const GetBoardResponseSchema = z.object({
+  grid: z.array(z.array(z.number())),
+  generation: z.number()
+});
 ```
 
 ### 5. Utilities Layer
@@ -196,8 +209,9 @@ sequenceDiagram
 Errors are handled at multiple levels:
 
 1. **API Layer**: Intercepts HTTP errors and transforms them into user-friendly messages
-2. **Business Logic Layer**: Catches errors and passes them to the presentation layer
-3. **Application Layer**: Displays errors to users via Toast notifications
+2. **Schema Validation**: Zod catches API contract mismatches at runtime
+3. **Business Logic Layer**: Catches errors and passes them to the presentation layer
+4. **Application Layer**: Displays errors to users via Toast notifications
 
 **Error Flow**:
 ```
@@ -214,6 +228,50 @@ The application uses React's built-in state management:
 
 This approach is sufficient for the application's complexity and avoids the overhead of external state management libraries.
 
+## Testing
+
+The project includes a foundational test suite using Vitest and React Testing Library. The current implementation covers the most critical parts of the application with a focus on business logic and API contract validation.
+
+### Running Tests
+```bash
+# Run all tests
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+### Test Coverage
+
+- **useBoard Hook**: Comprehensive tests for all business logic including board creation, advancement, reset, and session recovery
+- **API Schemas**: Validation tests ensuring Zod schemas correctly validate API contracts at runtime
+- **Component Tests**: Basic tests for Cell component behavior and styling
+
+### Test Structure
+
+Tests are organized in a separate `tests/` directory that mirrors the main source structure. This keeps the codebase clean and separates testing concerns from production code.
+
+```
+src/
+├── tests/
+│   ├── setup.ts                    # Test configuration and global setup
+│   ├── hooks/
+│   │   └── useBoard.test.ts        # Business logic tests
+│   ├── api/
+│   │   └── schemas/
+│   │       └── boardSchemas.test.ts  # Runtime validation tests
+│   └── components/
+│       └── ui/
+│           └── Cell.test.tsx       # Component behavior tests
+```
+
+This structure provides clear separation between production code and tests while maintaining an intuitive mapping between test files and the code they validate.
+
+The test suite follows the Arrange-Act-Assert (AAA) pattern for readability and maintainability. Additional test coverage can be expanded in the future to include more comprehensive component testing and integration tests.
+
 ## Design Principles
 
 1. **Separation of Concerns**: Each layer has a clear, single responsibility
@@ -223,13 +281,17 @@ This approach is sufficient for the application's complexity and avoids the over
 5. **Session Persistence**: Automatic recovery of previous game sessions
 6. **Loading States**: Clear feedback during asynchronous operations
 7. **Dogmatic API Contracts**: Exact replication of backend contracts for consistency
+8. **Runtime Validation**: Zod schemas ensure type safety beyond compile-time
 
 ## Technology Stack
 
 - **React**: UI library with TypeScript for type safety
 - **Axios**: HTTP client for API communication
+- **Zod**: Runtime schema validation for API contracts
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Vite**: Build tool and development server
+- **Vitest**: Fast unit test framework with native ESM support
+- **React Testing Library**: Testing utilities for React components
 - **localStorage**: Browser storage for session persistence
 
 ## Future Considerations
@@ -238,6 +300,18 @@ If the application grows in complexity, consider:
 
 - Adding a state management library (Redux, Zustand) for more complex state
 - Implementing optimistic UI updates for better perceived performance
-- Adding unit tests for business logic and integration tests for API layer
+- Expanding test coverage with more comprehensive component and integration tests
 - Implementing WebSocket connection for real-time multiplayer features
 - Adding service worker for offline functionality
+
+
+# Author
+
+**César Adriel Airaldo**
+
+- LinkedIn: [linkedin.com/in/adrielairaldo](https://www.linkedin.com/in/adrielairaldo/)
+- Email: adrielairaldo@hotmail.com | adrielairaldo@gmail.com
+
+---
+
+*This project was developed as a demonstration of full-stack development skills using React, TypeScript, and modern architectural patterns.*
