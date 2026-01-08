@@ -20,6 +20,7 @@ COPY ["src/Conways.Service.Application/Conways.Service.Application.csproj", "src
 COPY ["src/Conways.Service.Domain/Conways.Service.Domain.csproj", "src/Conways.Service.Domain/"]
 COPY ["src/Conways.Service.HttpApi/Conways.Service.HttpApi.csproj", "src/Conways.Service.HttpApi/"]
 COPY ["src/Conways.Service.Infrastructure.MongoDb/Conways.Service.Infrastructure.MongoDb.csproj", "src/Conways.Service.Infrastructure.MongoDb/"]
+COPY ["src/Conways.Service.Infrastructure.Redis/Conways.Service.Infrastructure.Redis.csproj", "src/Conways.Service.Infrastructure.Redis/"]
 
 RUN dotnet restore "src/Conways.Service.HttpApi/Conways.Service.HttpApi.csproj"
 COPY ./src ./src
