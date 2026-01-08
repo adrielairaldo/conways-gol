@@ -34,3 +34,23 @@ The project is divided into four main layers:
 - **CQRS**: Clear separation between actions that change state and actions that read state.
 - **Repository Pattern**: Decouples the application from MongoDB details.
 - **Unit Testing**: Domain logic is fully isolated for easy testing.
+
+## Persistence & Indexing Strategy
+
+The application uses MongoDB as the persistence layer, as the domain model (Board and BoardState) is inherently document-oriented.
+
+### Access Patterns
+- Boards are always accessed by `BoardId`
+- Each operation reads or updates a single board document
+- No cross-board queries or aggregations are currently required
+
+### Indexes
+- MongoDB primary index on `_id` is used for all board lookups
+- `BoardId` is mapped directly to `_id` to guarantee O(1) retrieval
+- This ensures constant-time reads for all core operations
+
+### Future Considerations
+- A TTL index on `createdAt` can be added to automatically clean up abandoned boards
+- Additional indexes may be introduced if new query patterns emerge (e.g. listing boards)
+
+This indexing strategy aligns with the current access patterns while remaining extensible for future requirements.
