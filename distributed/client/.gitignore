@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# @vitest/coverage-v8 generated folder
+coverage

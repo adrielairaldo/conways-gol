@@ -24,3 +24,6 @@ docker-compose.yml
 
 # Documentation files
 *.md
+
+# @vitest/coverage-v8 generated folder
+coverage
