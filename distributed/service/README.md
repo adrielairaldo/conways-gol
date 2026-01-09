@@ -27,10 +27,12 @@ The project is divided into four main layers:
 
 #### Domain Model Overview (Conceptual)
 
+```mermaid
 flowchart LR
     Board -->|has| BoardState
     BoardState -->|contains| Grid
     Grid -->|matrix of| CellState
+```
 
 - A **Board** represents a long-lived aggregate.
 - A **BoardState** is immutable and represents a snapshot in time.
